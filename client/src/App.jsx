@@ -4,6 +4,7 @@ import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import Profile from './pages/Profile'  // Add this import for the new Profile page
 import MyPosts from './pages/MyPosts'
+import Matches from './pages/Matches'
 import CreatePostModal from './components/CreatePostModal'
 import AcceptModal from './components/AcceptModal'
 
@@ -29,6 +30,7 @@ export default function App() {
         <Route path="/" element={<Home onAccept={setAcceptPost} />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/posts" element={<MyPosts />} />
+        <Route path="/matches" element={<Matches />} />
         {/* Add more routes here as needed, e.g., <Route path="/settings" element={<Settings />} /> */}
       </Routes>
 
