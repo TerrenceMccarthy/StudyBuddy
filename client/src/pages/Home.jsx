@@ -1,30 +1,58 @@
-import { useState } from 'react'
-import { mockPosts } from '../data/mockData'
+import { useState, useEffect } from 'react'
+import { supabase } from '../lib/supabaseClient'
 import PostCard from '../components/PostCard'
 import styles from './Home.module.css'
 
 const FILTERS = ["All", "Computer Science", "Mathematics", "Biology", "Chemistry", "English", "History"]
 
 export default function Home({ onAccept }) {
-  const [posts, setPosts] = useState(mockPosts)
+  const [posts, setPosts] = useState([])
+  const [loading, setLoading] = useState(true)
   const [activeFilter, setActiveFilter] = useState("All")
   const [search, setSearch] = useState("")
 
+  const fetchPosts = async () => {
+    setLoading(true)
+    const { data, error } = await supabase
+      .from('posts')
+      .select(`
+        *,
+        profiles ( full_name ),
+        matches ( count )
+      `)
+      .eq('status', 'open')
+      .order('created_at', { ascending: false })
+    
+    if (!error) {
+      const withCount = data.map(p => ({
+        ...p,
+        match_count: p.matches?.[0]?.count || 0,
+        host_name: p.profiles?.full_name || 'Unknown',
+      }))
+      setPosts(withCount)
+    }
+    setLoading(false)
+  }
+
+  useEffect(() => { fetchPosts() }, [])
+
   const filtered = posts.filter(p => {
     const matchFilter = activeFilter === "All" || p.subject === activeFilter
-    const matchSearch = !search || p.topic.toLowerCase().includes(search.toLowerCase()) ||
+    const matchSearch = !search ||
+      p.topic.toLowerCase().includes(search.toLowerCase()) ||
       p.building.toLowerCase().includes(search.toLowerCase()) ||
-      p.subject.toLowerCase().includes(search.toLowerCase())
+      p.subject.toLowerCase().includes(search.toLowerCase()) ||
+      p.course.toLowerCase().includes(search.toLowerCase())
     return matchFilter && matchSearch
   })
 
-  const openCount = posts.filter(p => p.status === 'open').length
+  const openCount = posts.length
 
   return (
     <main className={styles.main}>
       <div className={styles.hero}>
         <div className={styles.heroInner}>
-          <p className={styles.heroEyebrow}>📖 {openCount} open sessions near you</p>
+          <p className={styles.heroEyebrow}>📖 {openCount} open session{openCount !== 1 ? 's' : ''} near you</p>
           <h1 className={styles.heroTitle}>
             Find your<br /><em>study buddy</em>
           </h1>
@@ -81,7 +109,12 @@ export default function Home({ onAccept }) {
           </select>
         </div>
 
-        {filtered.length === 0 ? (
+        {loading ? (
+          <div className={styles.empty}>
+            <span className={styles.emptyIcon}>⏳</span>
+            <p className={styles.emptyTitle}>Loading sessions...</p>
+          </div>
+        ) : filtered.length === 0 ? (
           <div className={styles.empty}>
             <span className={styles.emptyIcon}>🔎</span>
             <p className={styles.emptyTitle}>No sessions found</p>

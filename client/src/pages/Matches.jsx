@@ -1,78 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { supabase } from '../lib/supabaseClient'
+import { useUser } from '../context/UserContext'
 import styles from './Matches.module.css'
-
-const MOCK_MATCHES = [
-  {
-    id: 1,
-    course: 'CSE 3318 — Algorithms & Data Structures',
-    subject: 'Computer Science',
-    topic: 'Focusing on graph traversal and dynamic programming. Bring your notes!',
-    building: 'Central Library, Study Room 4B',
-    time: 'Today, 7:00 PM',
-    duration: '2 hours',
-    host: { name: 'Marcus T.', initials: 'MT', color: '#2d7a6b' },
-    matchedAgo: '12 min ago',
-    participants: 3,
-    status: 'upcoming',
-    messages: 2,
-  },
-  {
-    id: 2,
-    course: 'BIOL 2457 — Anatomy & Physiology',
-    subject: 'Biology',
-    topic: 'Cramming for the practical exam next week. Flashcards and diagrams.',
-    building: 'Health Sciences Bldg, Lounge 3',
-    time: 'Today, 9:00 PM',
-    duration: '3 hours',
-    host: { name: 'Leila R.', initials: 'LR', color: '#2e7d32' },
-    matchedAgo: '1 hr ago',
-    participants: 4,
-    status: 'upcoming',
-    messages: 0,
-  },
-  {
-    id: 3,
-    course: 'HIST 3301 — U.S. History Since 1865',
-    subject: 'History',
-    topic: 'Essay prep — Reconstruction era through the Gilded Age.',
-    building: 'Humanities Center, Coffee area',
-    time: 'Fri, 1:00 PM',
-    duration: '2 hours',
-    host: { name: 'David K.', initials: 'DK', color: '#b71c5a' },
-    matchedAgo: '3 hrs ago',
-    participants: 2,
-    status: 'upcoming',
-    messages: 5,
-  },
-  {
-    id: 4,
-    course: 'MATH 2326 — Calculus III',
-    subject: 'Mathematics',
-    topic: 'Working through multivariable integrals and vector fields. All levels welcome.',
-    building: 'Science Hall, Room 201',
-    time: 'Wed, 3:30 PM',
-    duration: '1.5 hours',
-    host: { name: 'Priya S.', initials: 'PS', color: '#c07d1e' },
-    matchedAgo: '2 days ago',
-    participants: 5,
-    status: 'completed',
-    messages: 0,
-  },
-  {
-    id: 5,
-    course: 'ENGL 2331 — British Literature',
-    subject: 'English',
-    topic: 'Close reading of Paradise Lost. Discussion-based — come ready to talk.',
-    building: 'Humanities Center, Reading Room',
-    time: 'Thu, 4:00 PM',
-    duration: '1.5 hours',
-    host: { name: 'Aiden F.', initials: 'AF', color: '#1565c0' },
-    matchedAgo: '2 days ago',
-    participants: 3,
-    status: 'completed',
-    messages: 0,
-  },
-]
 
 const SUBJECT_COLORS = {
   'Computer Science': { bg: '#e8f4f0', text: '#2d7a6b' },
@@ -88,21 +17,55 @@ const STATUS_CONFIG = {
   completed: { label: 'Completed', dot: '#9e9e9e', bg: '#f5f5f5', text: '#616161' },
 }
 
+function timeAgo(dateStr) {
+  const diff = Math.floor((Date.now() - new Date(dateStr)) / 1000)
+  if (diff < 60) return 'Just now'
+  if (diff < 3600) return `${Math.floor(diff / 60)} min ago`
+  if (diff < 86400) return `${Math.floor(diff / 3600)} hr${Math.floor(diff / 3600) > 1 ? 's' : ''} ago`
+  if (diff < 604800) return `${Math.floor(diff / 86400)} day${Math.floor(diff / 86400) > 1 ? 's' : ''} ago`
+  return new Date(dateStr).toLocaleDateString()
+}
+
+function formatTime(dateStr) {
+  return new Date(dateStr).toLocaleString('en-US', {
+    weekday: 'short', month: 'short', day: 'numeric',
+    hour: 'numeric', minute: '2-digit'
+  })
+}
+
+function getInitials(name) {
+  if (!name) return '?'
+  return name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
+}
+
+function getAvatarColor(str) {
+  const colors = ['#2d7a6b', '#c07d1e', '#2e7d32', '#6a3fa0', '#1565c0', '#b71c5a']
+  let hash = 0
+  for (let i = 0; i < str.length; i++) hash = str.charCodeAt(i) + ((hash << 5) - hash)
+  return colors[Math.abs(hash) % colors.length]
+}
+
+function getStatus(sessionTime) {
+  return new Date(sessionTime) > new Date() ? 'upcoming' : 'completed'
+}
+
 function MatchCard({ match, onMessage, onLeave }) {
   const [menuOpen, setMenuOpen] = useState(false)
-  const subjectColor = SUBJECT_COLORS[match.subject] || { bg: '#f0f0f0', text: '#555' }
-  const status = STATUS_CONFIG[match.status]
+  const post = match.posts
+  const hostName = post?.profiles?.full_name || 'Unknown'
+  const subjectColor = SUBJECT_COLORS[post?.subject] || { bg: '#f0f0f0', text: '#555' }
+  const status = STATUS_CONFIG[getStatus(post?.time)]
 
   return (
-    <div className={`${styles.card} ${match.status === 'completed' ? styles.cardDim : ''}`}>
+    <div className={`${styles.card} ${getStatus(post?.time) === 'completed' ? styles.cardDim : ''}`}>
       <div className={styles.cardHeader}>
         <div className={styles.avatarWrap}>
-          <div className={styles.avatar} style={{ background: match.host.color }}>
-            {match.host.initials}
+          <div className={styles.avatar} style={{ background: getAvatarColor(hostName) }}>
+            {getInitials(hostName)}
           </div>
           <div className={styles.posterInfo}>
-            <span className={styles.posterName}>{match.host.name}</span>
-            <span className={styles.postedAgo}>{match.matchedAgo}</span>
+            <span className={styles.posterName}>{hostName}</span>
+            <span className={styles.postedAgo}>{timeAgo(match.created_at)}</span>
           </div>
         </div>
         <div className={styles.headerRight}>
@@ -110,7 +73,7 @@ function MatchCard({ match, onMessage, onLeave }) {
             className={styles.subjectBadge}
             style={{ background: subjectColor.bg, color: subjectColor.text }}
           >
-            {match.subject}
+            {post?.subject}
           </span>
           <div className={styles.menuWrap}>
             <button className={styles.menuBtn} onClick={() => setMenuOpen(o => !o)}>···</button>
@@ -119,10 +82,10 @@ function MatchCard({ match, onMessage, onLeave }) {
                 <button onClick={() => { onMessage(match); setMenuOpen(false) }}>
                   💬 Message Host
                 </button>
-                <button onClick={() => { setMenuOpen(false) }}>
+                <button onClick={() => setMenuOpen(false)}>
                   📋 View Details
                 </button>
-                {match.status === 'upcoming' && (
+                {getStatus(post?.time) === 'upcoming' && (
                   <button
                     className={styles.menuLeave}
                     onClick={() => { onLeave(match.id); setMenuOpen(false) }}
@@ -136,16 +99,16 @@ function MatchCard({ match, onMessage, onLeave }) {
         </div>
       </div>
 
-      <h3 className={styles.courseTitle}>{match.course}</h3>
+      <h3 className={styles.courseTitle}>{post?.course}</h3>
 
       <div className={styles.topicBox}>
-        <p className={styles.topicText}>{match.topic}</p>
+        <p className={styles.topicText}>{post?.topic}</p>
       </div>
 
       <div className={styles.meta}>
-        <span>📍 {match.building}</span>
-        <span>🕐 {match.time}</span>
-        <span>⏱ {match.duration}</span>
+        <span>📍 {post?.building}</span>
+        <span>🕐 {formatTime(post?.time)}</span>
+        <span>⏱ {post?.duration}</span>
       </div>
 
       <div className={styles.cardFooter}>
@@ -159,16 +122,10 @@ function MatchCard({ match, onMessage, onLeave }) {
 
         <div className={styles.footerActions}>
           <span className={styles.participants}>
-            👥 {match.participants} joined
+            👥 {post?.match_count || 0} joined
           </span>
-          {match.status === 'upcoming' && (
-            <button
-              className={styles.msgBtn}
-              onClick={() => onMessage(match)}
-            >
-              {match.messages > 0 && (
-                <span className={styles.msgBadge}>{match.messages}</span>
-              )}
+          {getStatus(post?.time) === 'upcoming' && (
+            <button className={styles.msgBtn} onClick={() => onMessage(match)}>
               💬
             </button>
           )}
@@ -182,7 +139,7 @@ function MessageModal({ match, onClose }) {
   const [msg, setMsg] = useState('')
   const [sent, setSent] = useState([
     { from: 'them', text: 'Hey! Looking forward to the session.', time: '10:30 AM' },
-    { from: 'me', text: 'Same! I\'ll bring my notes on graph traversal.', time: '10:32 AM' },
+    { from: 'me', text: "I'll bring my notes!", time: '10:32 AM' },
   ])
 
   const handleSend = () => {
@@ -192,18 +149,20 @@ function MessageModal({ match, onClose }) {
   }
 
   if (!match) return null
+  const post = match.posts
+  const hostName = post?.profiles?.full_name || 'Host'
 
   return (
     <div className={styles.modalBackdrop} onClick={onClose}>
       <div className={styles.modal} onClick={e => e.stopPropagation()}>
         <div className={styles.modalHeader}>
           <div className={styles.modalTitleRow}>
-            <div className={styles.avatar} style={{ background: match.host.color, width: 32, height: 32, fontSize: '0.65rem' }}>
-              {match.host.initials}
+            <div className={styles.avatar} style={{ background: getAvatarColor(hostName), width: 32, height: 32, fontSize: '0.65rem' }}>
+              {getInitials(hostName)}
             </div>
             <div>
-              <p className={styles.modalTitle}>{match.host.name}</p>
-              <p className={styles.modalSub}>{match.course}</p>
+              <p className={styles.modalTitle}>{hostName}</p>
+              <p className={styles.modalSub}>{post?.course}</p>
             </div>
           </div>
           <button className={styles.modalClose} onClick={onClose}>✕</button>
@@ -234,7 +193,9 @@ function MessageModal({ match, onClose }) {
 }
 
 export default function Matches() {
-  const [matches, setMatches] = useState(MOCK_MATCHES)
+  const { user } = useUser()
+  const [matches, setMatches] = useState([])
+  const [loading, setLoading] = useState(true)
   const [activeFilter, setActiveFilter] = useState('all')
   const [messagingMatch, setMessagingMatch] = useState(null)
 
@@ -244,16 +205,61 @@ export default function Matches() {
     { key: 'completed', label: 'Completed' },
   ]
 
-  const filtered = matches.filter(m => activeFilter === 'all' || m.status === activeFilter)
+  // ── Fetch user's matches ───────────────────────────────
+  const fetchMatches = async () => {
+    setLoading(true)
+    const { data, error } = await supabase
+      .from('matches')
+      .select(`
+        id,
+        created_at,
+        posts (
+          id,
+          course,
+          subject,
+          topic,
+          building,
+          time,
+          duration,
+          status,
+          user_id,
+          profiles ( full_name )
+        )
+      `)
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false })
+
+    if (!error) setMatches(data)
+    setLoading(false)
+  }
+
+  useEffect(() => { fetchMatches() }, [user])
+
+  const filtered = matches.filter(m => {
+    const status = getStatus(m.posts?.time)
+    return activeFilter === 'all' || status === activeFilter
+  })
 
   const stats = {
     total: matches.length,
-    upcoming: matches.filter(m => m.status === 'upcoming').length,
-    completed: matches.filter(m => m.status === 'completed').length,
-    unread: matches.reduce((sum, m) => sum + m.messages, 0),
+    upcoming: matches.filter(m => getStatus(m.posts?.time) === 'upcoming').length,
+    completed: matches.filter(m => getStatus(m.posts?.time) === 'completed').length,
   }
 
-  const handleLeave = (id) => setMatches(ms => ms.filter(m => m.id !== id))
+  const handleLeave = async (matchId) => {
+    await supabase.from('matches').delete().eq('id', matchId)
+    setMatches(ms => ms.filter(m => m.id !== matchId))
+  }
+
+  if (loading) {
+    return (
+      <main className={styles.main}>
+        <div className={styles.loadingWrap}>
+          <p className={styles.loadingText}>Loading your matches...</p>
+        </div>
+      </main>
+    )
+  }
 
   return (
     <main className={styles.main}>
@@ -261,12 +267,8 @@ export default function Matches() {
       <div className={styles.hero}>
         <div className={styles.heroInner}>
           <p className={styles.heroEyebrow}>🤝 {stats.upcoming} upcoming session{stats.upcoming !== 1 ? 's' : ''}</p>
-          <h1 className={styles.heroTitle}>
-            My<br /><em>Matches</em>
-          </h1>
-          <p className={styles.heroSub}>
-            Sessions you've joined — connect, show up, and study together.
-          </p>
+          <h1 className={styles.heroTitle}>My<br /><em>Matches</em></h1>
+          <p className={styles.heroSub}>Sessions you've joined — connect, show up, and study together.</p>
         </div>
         <div className={styles.heroDecor} aria-hidden>
           <div className={styles.decorDot} style={{ top: '20%', left: '10%', animationDelay: '0s' }} />
@@ -289,10 +291,6 @@ export default function Matches() {
         <div className={styles.statCard}>
           <span className={styles.statNum} style={{ color: '#888' }}>{stats.completed}</span>
           <span className={styles.statLabel}>Completed</span>
-        </div>
-        <div className={styles.statCard}>
-          <span className={styles.statNum} style={{ color: '#c07d1e' }}>{stats.unread}</span>
-          <span className={styles.statLabel}>Unread Msgs</span>
         </div>
       </div>
 

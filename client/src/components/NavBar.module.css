@@ -122,3 +122,54 @@
 .avatar:hover {
   transform: scale(1.08);
 }
+
+/* ── Avatar dropdown ──────────────────────────────────── */
+.avatarWrap {
+  position: relative;
+}
+
+.avatarBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  background: #fff;
+  border: 1px solid #e0d8cc;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  min-width: 150px;
+  z-index: 100;
+  overflow: hidden;
+}
+
+.dropdownItem {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.65rem 1rem;
+  background: none;
+  border: none;
+  font-family: system-ui, sans-serif;
+  font-size: 0.85rem;
+  color: #333;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.1s;
+}
+
+.dropdownItem:hover {
+  background: #f5f0e8;
+}
+
+.dropdownLogout {
+  color: #c0392b;
+  border-top: 1px solid #f0ebe2;
+}
