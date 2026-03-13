@@ -1,0 +1,553 @@
+/* Profile.module.css */
+
+.main {
+  min-height: 100vh;
+  background: #f5f0e8;
+  font-family: system-ui, sans-serif;
+}
+
+.loadingWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 2rem;
+}
+
+.loadingText {
+  font-size: 0.95rem;
+  color: #aaa;
+}
+
+/* ── Hero ─────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  padding: 2.5rem 2.5rem 2rem;
+  overflow: hidden;
+}
+
+.heroDecor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.decorDot {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #c07d1e;
+  opacity: 0.35;
+  animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.35; }
+  50%       { transform: scale(1.5); opacity: 0.6; }
+}
+
+.profileHeader {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  position: relative;
+}
+
+.avatarBlock {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.avatarLarge {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background: #2d7a6b;
+  color: #fff;
+  font-size: 1.6rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+}
+
+.avatarStatus {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #4caf50;
+  border: 2px solid #f5f0e8;
+}
+
+.profileMeta {
+  flex: 1;
+  min-width: 0;
+}
+
+.profileNameRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.4rem;
+}
+
+.profileName {
+  font-family: 'Georgia', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.profileHandle {
+  font-size: 0.82rem;
+  color: #aaa;
+  margin: 0.1rem 0 0;
+}
+
+.editBtn {
+  padding: 0.42rem 1rem;
+  border-radius: 999px;
+  border: 1.5px solid #d5cfc4;
+  background: #fff;
+  font-size: 0.82rem;
+  color: #555;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+
+.editBtn:hover {
+  border-color: #2d7a6b;
+  color: #2d7a6b;
+}
+
+.profileUniversity {
+  font-size: 0.88rem;
+  color: #666;
+  margin: 0 0 0.75rem;
+}
+
+.profileBio {
+  font-size: 0.93rem;
+  color: #444;
+  line-height: 1.55;
+  margin: 0 0 1rem;
+  max-width: 560px;
+}
+
+.profileTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.subjectTag {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+}
+
+.styleTag {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  background: #f0ebe2;
+  color: #777;
+}
+
+/* ── Stats Bar ────────────────────────────────────────── */
+.statsBar {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-top: 1px solid #e8e0d2;
+  border-bottom: 1px solid #e8e0d2;
+  padding: 1.1rem 2.5rem;
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  flex: 1;
+}
+
+.statNum {
+  font-family: 'Georgia', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1;
+}
+
+.statLabel {
+  font-size: 0.75rem;
+  color: #999;
+  letter-spacing: 0.02em;
+}
+
+.statDivider {
+  width: 1px;
+  height: 36px;
+  background: #e8e0d2;
+}
+
+/* ── Availability ─────────────────────────────────────── */
+.availSection {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1rem 2.5rem;
+  background: #faf6ee;
+  border-bottom: 1px solid #e8e0d2;
+  flex-wrap: wrap;
+}
+
+.availLabel {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #888;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.availDays {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.dayChip {
+  font-size: 0.75rem;
+  padding: 0.22rem 0.65rem;
+  border-radius: 999px;
+  border: 1.5px solid #d5cfc4;
+  background: #fff;
+  color: #bbb;
+  font-weight: 500;
+}
+
+.dayActive {
+  background: #2d7a6b;
+  border-color: #2d7a6b;
+  color: #fff;
+}
+
+/* ── Tabs ─────────────────────────────────────────────── */
+.tabs {
+  display: flex;
+  padding: 1.25rem 2.5rem 0;
+  border-bottom: 1px solid #e8e0d2;
+}
+
+.tab {
+  padding: 0.5rem 1.1rem;
+  background: none;
+  border: none;
+  font-size: 0.88rem;
+  color: #999;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: all 0.15s;
+}
+
+.tab:hover { color: #555; }
+
+.tabActive {
+  color: #1a1a1a;
+  font-weight: 600;
+  border-bottom-color: #1a1a1a;
+}
+
+/* ── Tab Content ──────────────────────────────────────── */
+.tabContent {
+  padding: 1.5rem 2.5rem 3rem;
+}
+
+/* ── Activity ─────────────────────────────────────────── */
+.activityList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 680px;
+}
+
+.activityRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #fff;
+  border: 1px solid #e8e0d2;
+  border-radius: 12px;
+  padding: 0.9rem 1.1rem;
+  transition: box-shadow 0.15s;
+}
+
+.activityRow:hover {
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+.activityIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.activityInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.activityCourse {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 0.15rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.activityMeta {
+  font-size: 0.78rem;
+  color: #999;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.dot { color: #ccc; }
+
+.activityBadge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ── Empty ────────────────────────────────────────────── */
+.empty {
+  text-align: center;
+  padding: 3rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.emptyIcon { font-size: 2rem; margin-bottom: 0.25rem; }
+.emptyTitle { font-family: 'Georgia', serif; font-size: 1.1rem; font-weight: 700; color: #1a1a1a; margin: 0; }
+.emptySub { font-size: 0.88rem; color: #888; margin: 0; }
+
+/* ── Edit Modal ───────────────────────────────────────── */
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 1rem;
+}
+
+.modal {
+  background: #fff;
+  border-radius: 18px;
+  width: 100%;
+  max-width: 520px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  overflow: hidden;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+.modalTitle {
+  font-family: 'Georgia', serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.modalClose {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: #aaa;
+  cursor: pointer;
+  padding: 0.3rem;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+
+.modalClose:hover { background: #f5f0e8; }
+
+.modalBody {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow-y: auto;
+}
+
+.fieldLabel {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #888;
+  margin-bottom: 0.3rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.fieldInput {
+  width: 100%;
+  padding: 0.6rem 0.85rem;
+  border: 1.5px solid #d5cfc4;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  color: #1a1a1a;
+  background: #fafaf8;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+  font-family: system-ui, sans-serif;
+}
+
+.fieldInput:focus {
+  outline: none;
+  border-color: #2d7a6b;
+  background: #fff;
+}
+
+.fieldTextarea {
+  composes: fieldInput;
+  min-height: 85px;
+  resize: vertical;
+}
+
+.fieldRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.chipGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.chipBtn {
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  border: 1.5px solid #d5cfc4;
+  background: #fff;
+  font-family: system-ui, sans-serif;
+  font-size: 0.8rem;
+  color: #555;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.chipBtn:hover {
+  border-color: #2d7a6b;
+  color: #2d7a6b;
+}
+
+.chipActive {
+  background: #1a1a1a;
+  color: #fff;
+  border-color: #1a1a1a;
+}
+
+.modalFooter {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #eee;
+}
+
+.cancelBtn {
+  padding: 0.55rem 1.25rem;
+  border-radius: 999px;
+  border: 1.5px solid #d5cfc4;
+  background: #fff;
+  font-size: 0.88rem;
+  color: #555;
+  cursor: pointer;
+  font-family: system-ui, sans-serif;
+  transition: all 0.15s;
+}
+
+.cancelBtn:hover { border-color: #aaa; }
+
+.saveBtn {
+  padding: 0.55rem 1.5rem;
+  border-radius: 999px;
+  background: #2d7a6b;
+  color: #fff;
+  border: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: system-ui, sans-serif;
+  transition: background 0.15s;
+}
+
+.saveBtn:hover { background: #235f54; }
+.saveBtn:disabled { opacity: 0.65; cursor: not-allowed; }
+
+/* ── Responsive ───────────────────────────────────────── */
+@media (max-width: 640px) {
+  .hero, .tabContent {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  .statsBar, .availSection, .tabs {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  .profileHeader {
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .profileNameRow { flex-wrap: wrap; }
+  .profileName { font-size: 1.4rem; }
+  .fieldRow { grid-template-columns: 1fr; }
+}
