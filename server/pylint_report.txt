@@ -1,0 +1,13 @@
+************* Module app
+app.py:51:0: C0304: Final newline missing (missing-final-newline)
+app.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+app.py:1:0: E0401: Unable to import 'flask' (import-error)
+app.py:2:0: E0401: Unable to import 'flask_cors' (import-error)
+app.py:24:0: C0116: Missing function or method docstring (missing-function-docstring)
+app.py:28:0: C0116: Missing function or method docstring (missing-function-docstring)
+app.py:32:0: C0116: Missing function or method docstring (missing-function-docstring)
+app.py:43:0: C0116: Missing function or method docstring (missing-function-docstring)
+
+-----------------------------------
+Your code has been rated at 2.73/10
+
