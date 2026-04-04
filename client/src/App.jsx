@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useUser } from './context/UserContext'
 import { supabase } from './lib/supabaseClient'
+import { checkForSpam } from './lib/spamDetection'
 import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import Profile from './pages/Profile'
@@ -28,32 +29,41 @@ function AppContent() {
   const { user } = useUser()
   const [showCreate, setShowCreate] = useState(false)
   const [acceptPost, setAcceptPost] = useState(null)
+  const [spamError, setSpamError] = useState('')
 
   const handleCreateSubmit = async (form) => {
     if (!user) return
 
-    // Combine date + time into a single ISO timestamp
+    setSpamError('')
+
+    // ── Run spam checks before saving ─────────────────
+    const spam = await checkForSpam(user.id, form)
+    if (!spam.ok) {
+      setSpamError(spam.reason)
+      return // keep modal open so user sees the error
+    }
+
     const combinedTime = form.date && form.time
       ? new Date(`${form.date}T${form.time}`).toISOString()
       : null
 
-    // Map modal fields to database columns
     const { error } = await supabase.from('posts').insert({
-      user_id: user.id,
-      course: form.topic,           // modal calls it 'topic', db calls it 'course'
-      subject: form.subject,
-      topic: form.notes || '',      // modal calls it 'notes', db calls it 'topic'
-      building: form.room
-        ? `${form.building}, ${form.room}`
-        : form.building,
-      time: combinedTime,
+      user_id:  user.id,
+      course:   form.topic,
+      subject:  form.subject,
+      topic:    form.notes || '',
+      building: form.room ? `${form.building}, ${form.room}` : form.building,
+      time:     combinedTime,
       duration: form.duration,
-      status: 'open',
+      status:   'open',
     })
 
     if (error) {
       console.error('Error creating post:', error.message)
+      return
     }
+
+    setShowCreate(false)
   }
 
   const handleAcceptConfirm = async (postId) => {
@@ -69,72 +79,23 @@ function AppContent() {
     <>
       <Routes>
         {/* Guest only routes */}
-        <Route
-          path="/login"
-          element={
-            <GuestRoute>
-              <Login onNavigateToRegister={() => window.location.href = '/register'} />
-            </GuestRoute>
-          }
-        />
-        <Route
-          path="/register"
-          element={
-            <GuestRoute>
-              <Register onNavigateToLogin={() => window.location.href = '/login'} />
-            </GuestRoute>
-          }
-        />
+        <Route path="/login" element={<GuestRoute><Login onNavigateToRegister={() => window.location.href = '/register'} /></GuestRoute>} />
+        <Route path="/register" element={<GuestRoute><Register onNavigateToLogin={() => window.location.href = '/login'} /></GuestRoute>} />
 
         {/* Protected routes */}
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <Navbar onCreatePost={() => setShowCreate(true)} />
-              <Home onAccept={setAcceptPost} />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <Navbar onCreatePost={() => setShowCreate(true)} />
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/posts"
-          element={
-            <ProtectedRoute>
-              <Navbar onCreatePost={() => setShowCreate(true)} />
-              <MyPosts />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/matches"
-          element={
-            <ProtectedRoute>
-              <Navbar onCreatePost={() => setShowCreate(true)} />
-              <Matches />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/" element={<ProtectedRoute><Navbar onCreatePost={() => { setSpamError(''); setShowCreate(true) }} /><Home onAccept={setAcceptPost} /></ProtectedRoute>} />
+        <Route path="/profile" element={<ProtectedRoute><Navbar onCreatePost={() => { setSpamError(''); setShowCreate(true) }} /><Profile /></ProtectedRoute>} />
+        <Route path="/posts" element={<ProtectedRoute><Navbar onCreatePost={() => { setSpamError(''); setShowCreate(true) }} /><MyPosts /></ProtectedRoute>} />
+        <Route path="/matches" element={<ProtectedRoute><Navbar onCreatePost={() => { setSpamError(''); setShowCreate(true) }} /><Matches /></ProtectedRoute>} />
 
-        {/* Catch all */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
 
       {showCreate && (
         <CreatePostModal
-          onClose={() => setShowCreate(false)}
-          onSubmit={async (form) => {
-            await handleCreateSubmit(form)
-            setShowCreate(false)
-          }}
+          onClose={() => { setShowCreate(false); setSpamError('') }}
+          onSubmit={handleCreateSubmit}
+          spamError={spamError}
         />
       )}
 

@@ -13,18 +13,15 @@ const SUBJECT_COLORS = {
 }
 
 const SUBJECT_INITIALS = {
-  'Computer Science': 'CS',
-  'Mathematics': 'MA',
-  'Biology': 'BI',
-  'Chemistry': 'CH',
-  'English': 'EN',
-  'History': 'HI',
+  'Computer Science': 'CS', 'Mathematics': 'MA', 'Biology': 'BI',
+  'Chemistry': 'CH', 'English': 'EN', 'History': 'HI',
 }
 
 const STATUS_CONFIG = {
   open:    { label: 'Open',    dot: '#4caf50', bg: '#e8f5e9', text: '#2e7d32' },
   matched: { label: 'Matched', dot: '#2196f3', bg: '#e3f2fd', text: '#1565c0' },
   closed:  { label: 'Closed',  dot: '#9e9e9e', bg: '#f5f5f5', text: '#616161' },
+  expired: { label: 'Expired', dot: '#f59e0b', bg: '#fff8e1', text: '#b45309' },
 }
 
 function timeAgo(dateStr) {
@@ -43,13 +40,22 @@ function formatTime(dateStr) {
   })
 }
 
+// Derive the real display status — expired overrides open/matched
+function getDisplayStatus(post) {
+  const isPast = post.time && new Date(post.time) < new Date()
+  if (isPast && post.status !== 'closed') return 'expired'
+  return post.status
+}
+
 function PostCard({ post, onEdit, onDelete, onClose }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const subjectColor = SUBJECT_COLORS[post.subject] || { bg: '#f0f0f0', text: '#555' }
-  const status = STATUS_CONFIG[post.status]
+  const displayStatus = getDisplayStatus(post)
+  const status = STATUS_CONFIG[displayStatus]
+  const isDim = displayStatus === 'closed' || displayStatus === 'expired'
 
   return (
-    <div className={`${styles.card} ${post.status === 'closed' ? styles.cardClosed : ''}`}>
+    <div className={`${styles.card} ${isDim ? styles.cardClosed : ''}`}>
       <div className={styles.cardHeader}>
         <div className={styles.avatarWrap}>
           <div className={styles.avatar} style={{ background: subjectColor.text }}>
@@ -68,8 +74,10 @@ function PostCard({ post, onEdit, onDelete, onClose }) {
             <button className={styles.menuBtn} onClick={() => setMenuOpen(o => !o)}>···</button>
             {menuOpen && (
               <div className={styles.menu}>
-                <button onClick={() => { onEdit(post); setMenuOpen(false) }}>✏️ Edit</button>
-                {post.status === 'open' && (
+                {displayStatus === 'open' && (
+                  <button onClick={() => { onEdit(post); setMenuOpen(false) }}>✏️ Edit</button>
+                )}
+                {displayStatus === 'open' && (
                   <button onClick={() => { onClose(post.id); setMenuOpen(false) }}>🔒 Close</button>
                 )}
                 <button className={styles.menuDelete} onClick={() => { onDelete(post.id); setMenuOpen(false) }}>🗑 Delete</button>
@@ -96,10 +104,11 @@ function PostCard({ post, onEdit, onDelete, onClose }) {
           <span className={styles.statusDot} style={{ background: status.dot }} />
           {status.label}
         </span>
-        {post.status !== 'closed' && (
-          <span className={styles.participants}>
-            {post.match_count || 0} joined
-          </span>
+        {displayStatus !== 'closed' && displayStatus !== 'expired' && (
+          <span className={styles.participants}>{post.match_count || 0} joined</span>
+        )}
+        {displayStatus === 'expired' && (
+          <span className={styles.expiredNote}>Session has passed</span>
         )}
       </div>
     </div>
@@ -125,17 +134,17 @@ export default function MyPosts() {
     { key: 'all', label: 'All Posts' },
     { key: 'open', label: 'Open' },
     { key: 'matched', label: 'Matched' },
+    { key: 'expired', label: 'Expired' },
     { key: 'closed', label: 'Closed' },
   ]
 
-  // ── Fetch user's posts ─────────────────────────────────
   const fetchPosts = async () => {
     setLoading(true)
     const { data, error } = await supabase
       .from('posts')
       .select(`*, matches(count)`)
       .eq('user_id', user.id)
-      .order('created_at', { ascending: false })
+      .order('time', { ascending: false })   // most recent session time first
 
     if (!error) {
       const withCount = data.map(p => ({
@@ -149,16 +158,20 @@ export default function MyPosts() {
 
   useEffect(() => { fetchPosts() }, [user])
 
-  const filtered = posts.filter(p => activeFilter === 'all' || p.status === activeFilter)
+  // Apply display status before filtering
+  const postsWithStatus = posts.map(p => ({ ...p, _displayStatus: getDisplayStatus(p) }))
+
+  const filtered = postsWithStatus.filter(p =>
+    activeFilter === 'all' || p._displayStatus === activeFilter
+  )
 
   const stats = {
     total: posts.length,
-    open: posts.filter(p => p.status === 'open').length,
-    matched: posts.filter(p => p.status === 'matched').length,
-    participants: posts.reduce((sum, p) => sum + (p.match_count || 0), 0),
+    open: postsWithStatus.filter(p => p._displayStatus === 'open').length,
+    matched: postsWithStatus.filter(p => p._displayStatus === 'matched').length,
+    expired: postsWithStatus.filter(p => p._displayStatus === 'expired').length,
   }
 
-  // ── Handlers ──────────────────────────────────────────
   const handleDelete = async (id) => {
     await supabase.from('posts').delete().eq('id', id)
     setPosts(ps => ps.filter(p => p.id !== id))
@@ -172,11 +185,8 @@ export default function MyPosts() {
   const handleEdit = (post) => {
     setEditingPost(post)
     setForm({
-      course: post.course,
-      subject: post.subject,
-      topic: post.topic,
-      building: post.building,
-      duration: post.duration,
+      course: post.course, subject: post.subject, topic: post.topic,
+      building: post.building, duration: post.duration,
       time: post.time?.slice(0, 16) || '',
     })
     setShowModal(true)
@@ -194,21 +204,19 @@ export default function MyPosts() {
       setFormError('Please fill in all fields.')
       return
     }
+    // Prevent creating a post in the past
+    if (new Date(form.time) < new Date()) {
+      setFormError('Please choose a future date and time.')
+      return
+    }
     setSaving(true)
-
     if (editingPost) {
-      const { error } = await supabase
-        .from('posts')
-        .update({ ...form })
-        .eq('id', editingPost.id)
+      const { error } = await supabase.from('posts').update({ ...form }).eq('id', editingPost.id)
       if (!error) await fetchPosts()
     } else {
-      const { error } = await supabase
-        .from('posts')
-        .insert({ ...form, user_id: user.id, status: 'open' })
+      const { error } = await supabase.from('posts').insert({ ...form, user_id: user.id, status: 'open' })
       if (!error) await fetchPosts()
     }
-
     setSaving(false)
     setShowModal(false)
   }
@@ -225,7 +233,6 @@ export default function MyPosts() {
 
   return (
     <main className={styles.main}>
-      {/* Hero */}
       <div className={styles.hero}>
         <div className={styles.heroInner}>
           <p className={styles.heroEyebrow}>📋 Your study sessions</p>
@@ -240,7 +247,6 @@ export default function MyPosts() {
         </div>
       </div>
 
-      {/* Stats Row */}
       <div className={styles.statsRow}>
         <div className={styles.statCard}>
           <span className={styles.statNum}>{stats.total}</span>
@@ -255,12 +261,11 @@ export default function MyPosts() {
           <span className={styles.statLabel}>Matched</span>
         </div>
         <div className={styles.statCard}>
-          <span className={styles.statNum} style={{ color: '#c07d1e' }}>{stats.participants}</span>
-          <span className={styles.statLabel}>Participants</span>
+          <span className={styles.statNum} style={{ color: '#b45309' }}>{stats.expired}</span>
+          <span className={styles.statLabel}>Expired</span>
         </div>
       </div>
 
-      {/* Controls */}
       <div className={styles.controls}>
         <div className={styles.filters}>
           {FILTERS.map(f => (
@@ -273,12 +278,9 @@ export default function MyPosts() {
             </button>
           ))}
         </div>
-        <button className={styles.newPostBtn} onClick={handleOpenNew}>
-          + New Session
-        </button>
+        <button className={styles.newPostBtn} onClick={handleOpenNew}>+ New Session</button>
       </div>
 
-      {/* Feed */}
       <div className={styles.content}>
         <div className={styles.feedHeader}>
           <span className={styles.feedCount}>
@@ -301,9 +303,9 @@ export default function MyPosts() {
                 ? "You haven't posted any sessions yet. Create one!"
                 : `You have no ${activeFilter} sessions.`}
             </p>
-            <button className={styles.emptyAction} onClick={handleOpenNew}>
-              + Post a Session
-            </button>
+            {activeFilter === 'all' && (
+              <button className={styles.emptyAction} onClick={handleOpenNew}>+ Post a Session</button>
+            )}
           </div>
         ) : (
           <div className={styles.grid}>
@@ -320,7 +322,6 @@ export default function MyPosts() {
         )}
       </div>
 
-      {/* Edit / Create Modal */}
       {showModal && (
         <div className={styles.modalBackdrop} onClick={() => setShowModal(false)}>
           <div className={styles.modal} onClick={e => e.stopPropagation()}>
@@ -330,48 +331,24 @@ export default function MyPosts() {
             </div>
             <div className={styles.modalBody}>
               <label className={styles.fieldLabel}>Course</label>
-              <input
-                className={styles.fieldInput}
-                value={form.course}
-                onChange={e => setForm(f => ({ ...f, course: e.target.value }))}
-                placeholder="e.g. CSE 3318 — Algorithms"
-              />
+              <input className={styles.fieldInput} value={form.course} onChange={e => setForm(f => ({ ...f, course: e.target.value }))} placeholder="e.g. CSE 3318 — Algorithms" />
 
               <label className={styles.fieldLabel}>Subject</label>
-              <select
-                className={styles.fieldInput}
-                value={form.subject}
-                onChange={e => setForm(f => ({ ...f, subject: e.target.value }))}
-              >
+              <select className={styles.fieldInput} value={form.subject} onChange={e => setForm(f => ({ ...f, subject: e.target.value }))}>
                 {Object.keys(SUBJECT_COLORS).map(s => <option key={s}>{s}</option>)}
               </select>
 
               <label className={styles.fieldLabel}>Topic / Description</label>
-              <textarea
-                className={styles.fieldTextarea}
-                value={form.topic}
-                onChange={e => setForm(f => ({ ...f, topic: e.target.value }))}
-                placeholder="What will you be studying?"
-              />
+              <textarea className={styles.fieldTextarea} value={form.topic} onChange={e => setForm(f => ({ ...f, topic: e.target.value }))} placeholder="What will you be studying?" />
 
               <div className={styles.fieldRow}>
                 <div>
                   <label className={styles.fieldLabel}>Location</label>
-                  <input
-                    className={styles.fieldInput}
-                    value={form.building}
-                    onChange={e => setForm(f => ({ ...f, building: e.target.value }))}
-                    placeholder="Building & room"
-                  />
+                  <input className={styles.fieldInput} value={form.building} onChange={e => setForm(f => ({ ...f, building: e.target.value }))} placeholder="Building & room" />
                 </div>
                 <div>
                   <label className={styles.fieldLabel}>Duration</label>
-                  <input
-                    className={styles.fieldInput}
-                    value={form.duration}
-                    onChange={e => setForm(f => ({ ...f, duration: e.target.value }))}
-                    placeholder="e.g. 2 hours"
-                  />
+                  <input className={styles.fieldInput} value={form.duration} onChange={e => setForm(f => ({ ...f, duration: e.target.value }))} placeholder="e.g. 2 hours" />
                 </div>
               </div>
 
@@ -380,6 +357,7 @@ export default function MyPosts() {
                 className={styles.fieldInput}
                 type="datetime-local"
                 value={form.time}
+                min={new Date().toISOString().slice(0, 16)}
                 onChange={e => setForm(f => ({ ...f, time: e.target.value }))}
               />
 

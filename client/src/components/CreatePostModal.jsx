@@ -6,19 +6,24 @@ const SUBJECTS = [
   "Physics", "English", "History", "Psychology", "Economics", "Other"
 ]
 
-export default function CreatePostModal({ onClose, onSubmit }) {
+export default function CreatePostModal({ onClose, onSubmit, spamError }) {
   const [form, setForm] = useState({
     topic: '', subject: '', building: '', room: '',
     date: '', time: '', duration: '', notes: ''
   })
+  const [submitting, setSubmitting] = useState(false)
 
   const set = (field, val) => setForm(f => ({ ...f, [field]: val }))
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    onSubmit(form)
-    onClose()
+    setSubmitting(true)
+    await onSubmit(form)
+    setSubmitting(false)
   }
+
+  // Min date = today
+  const today = new Date().toISOString().split('T')[0]
 
   return (
     <div className={styles.overlay} onClick={(e) => e.target === e.currentTarget && onClose()}>
@@ -87,6 +92,7 @@ export default function CreatePostModal({ onClose, onSubmit }) {
               <input
                 className={styles.input}
                 type="date"
+                min={today}
                 value={form.date}
                 onChange={e => set('date', e.target.value)}
                 required
@@ -130,12 +136,20 @@ export default function CreatePostModal({ onClose, onSubmit }) {
             />
           </div>
 
+          {/* ── Spam error ── */}
+          {spamError && (
+            <div className={styles.spamError}>
+              <span className={styles.spamIcon}>🚫</span>
+              <p className={styles.spamText}>{spamError}</p>
+            </div>
+          )}
+
           <div className={styles.modalFooter}>
             <button type="button" className={styles.cancelBtn} onClick={onClose}>
               Cancel
             </button>
-            <button type="submit" className={styles.submitBtn}>
-              Post Session
+            <button type="submit" className={styles.submitBtn} disabled={submitting}>
+              {submitting ? 'Checking...' : 'Post Session'}
             </button>
           </div>
         </form>

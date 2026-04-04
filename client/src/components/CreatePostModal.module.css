@@ -167,3 +167,26 @@
   box-shadow: 0 4px 14px rgba(200,135,58,0.35);
   transform: translateY(-1px);
 }
+
+.spamError {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  background: #fdecea;
+  border: 1.5px solid #f5c6c6;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+}
+
+.spamIcon {
+  font-size: 1rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.spamText {
+  font-size: 0.85rem;
+  color: #c0392b;
+  margin: 0;
+  line-height: 1.5;
+}

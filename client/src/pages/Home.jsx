@@ -3,7 +3,7 @@ import { supabase } from '../lib/supabaseClient'
 import PostCard from '../components/PostCard'
 import styles from './Home.module.css'
 
-const FILTERS = ["All", "Computer Science", "Mathematics", "Biology", "Chemistry", "English", "History", "Physics", "Business", "Psychology", "Medical", "Arts"]
+const FILTERS = ["All", "Computer Science", "Mathematics", "Biology", "Chemistry", "English", "History"]
 
 export default function Home({ onAccept }) {
   const [posts, setPosts] = useState([])
@@ -21,8 +21,9 @@ export default function Home({ onAccept }) {
         matches ( count )
       `)
       .eq('status', 'open')
-      .order('created_at', { ascending: false })
-    
+      .gt('time', new Date().toISOString())   // ← only future sessions
+      .order('time', { ascending: true })      // ← soonest first by default
+
     if (!error) {
       const withCount = data.map(p => ({
         ...p,
@@ -103,8 +104,8 @@ export default function Home({ onAccept }) {
             {activeFilter !== 'All' ? ` in ${activeFilter}` : ''}
           </span>
           <select className={styles.sortSelect}>
-            <option>Most recent</option>
             <option>Soonest first</option>
+            <option>Most recent</option>
             <option>By subject</option>
           </select>
         </div>

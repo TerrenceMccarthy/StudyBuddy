@@ -657,3 +657,31 @@
     gap: 0.75rem;
   }
 }
+
+.expiredNote {
+  font-family: system-ui, sans-serif;
+  font-size: 0.75rem;
+  color: #b45309;
+  font-style: italic;
+}
+
+.loadingWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 2rem;
+}
+
+.loadingText {
+  font-size: 0.95rem;
+  color: #aaa;
+}
+
+.formError {
+  font-size: 0.83rem;
+  color: #c0392b;
+  background: #fdecea;
+  border-radius: 8px;
+  padding: 0.55rem 0.85rem;
+  margin: 0;
+}
