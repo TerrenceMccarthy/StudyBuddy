@@ -47,7 +47,7 @@ function getDisplayStatus(post) {
   return post.status
 }
 
-function PostCard({ post, onEdit, onDelete, onClose }) {
+function PostCard({ post, onEdit, onDelete, onClose, avatarColor }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const subjectColor = SUBJECT_COLORS[post.subject] || { bg: '#f0f0f0', text: '#555' }
   const displayStatus = getDisplayStatus(post)
@@ -58,7 +58,7 @@ function PostCard({ post, onEdit, onDelete, onClose }) {
     <div className={`${styles.card} ${isDim ? styles.cardClosed : ''}`}>
       <div className={styles.cardHeader}>
         <div className={styles.avatarWrap}>
-          <div className={styles.avatar} style={{ background: subjectColor.text }}>
+          <div className={styles.avatar} style={{ background: avatarColor || subjectColor.text }}>
             {SUBJECT_INITIALS[post.subject] || 'ME'}
           </div>
           <div className={styles.posterInfo}>
@@ -116,7 +116,7 @@ function PostCard({ post, onEdit, onDelete, onClose }) {
 }
 
 export default function MyPosts() {
-  const { user } = useUser()
+  const { user, profile } = useUser()
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(true)
   const [activeFilter, setActiveFilter] = useState('all')
@@ -316,6 +316,7 @@ export default function MyPosts() {
                 onEdit={handleEdit}
                 onDelete={handleDelete}
                 onClose={handleClose}
+                avatarColor={profile?.avatar_color}
               />
             ))}
           </div>

@@ -17,7 +17,7 @@ export default function Home({ onAccept }) {
       .from('posts')
       .select(`
         *,
-        profiles ( full_name ),
+        profiles ( full_name, avatar_color ),
         matches ( count )
       `)
       .eq('status', 'open')
@@ -29,6 +29,7 @@ export default function Home({ onAccept }) {
         ...p,
         match_count: p.matches?.[0]?.count || 0,
         host_name: p.profiles?.full_name || 'Unknown',
+        host_avatar_color: p.profiles?.avatar_color || null,
       }))
       setPosts(withCount)
     }

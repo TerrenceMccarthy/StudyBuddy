@@ -3,6 +3,12 @@ import { supabase } from '../lib/supabaseClient'
 import { useUser } from '../context/UserContext'
 import styles from './Profile.module.css'
 
+const AVATAR_COLORS = [
+  '#2d7a6b', '#1565c0', '#6a3fa0', '#b71c5a',
+  '#c07d1e', '#e65100', '#2e7d32', '#37474f',
+  '#00838f', '#ad1457', '#4527a0', '#283593',
+]
+
 const SUBJECTS = ["Computer Science", "Mathematics", "Biology", "Chemistry", "English", "History", "Physics", "Economics"]
 const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 const STUDY_STYLES = ['Collaborative', 'Silent', 'Mixed', 'Discussion-based']
@@ -44,7 +50,7 @@ function StarRating({ rating }) {
 }
 
 export default function Profile() {
-  const { user } = useUser()
+  const { user, refreshProfile } = useUser()
   const [profile, setProfile] = useState(null)
   const [loading, setLoading] = useState(true)
   const [editing, setEditing] = useState(false)
@@ -125,12 +131,14 @@ export default function Profile() {
         subjects: draft.subjects,
         study_style: draft.study_style,
         availability: draft.availability,
+        avatar_color: draft.avatar_color,
       })
       .eq('id', user.id)
 
     if (!error) {
       setProfile(draft)
       setEditing(false)
+      refreshProfile()
     }
     setSaving(false)
   }
@@ -180,7 +188,7 @@ export default function Profile() {
 
         <div className={styles.profileHeader}>
           <div className={styles.avatarBlock}>
-            <div className={styles.avatarLarge}>{initials}</div>
+            <div className={styles.avatarLarge} style={{ background: profile?.avatar_color || '#2d7a6b' }}>{initials}</div>
             <div className={styles.avatarStatus} />
           </div>
 
@@ -404,6 +412,28 @@ export default function Profile() {
                   </button>
                 ))}
               </div>
+
+              <label className={styles.fieldLabel}>Icon Color</label>
+              <div className={styles.colorPicker}>
+                {AVATAR_COLORS.map(color => (
+                  <button
+                    key={color}
+                    type="button"
+                    className={styles.colorSwatch}
+                    style={{ background: color, outline: draft.avatar_color === color ? `3px solid ${color}` : 'none', outlineOffset: '2px' }}
+                    onClick={() => setDraft(d => ({ ...d, avatar_color: color }))}
+                    aria-label={color}
+                  />
+                ))}
+              </div>
+              {(draft.avatar_color || profile?.avatar_color) && (
+                <div className={styles.colorPreview}>
+                  <div className={styles.colorPreviewAvatar} style={{ background: draft.avatar_color || profile?.avatar_color }}>
+                    {getInitials(draft.full_name || profile?.full_name || user?.email || '')}
+                  </div>
+                  <span className={styles.colorPreviewLabel}>Preview</span>
+                </div>
+              )}
             </div>
 
             <div className={styles.modalFooter}>

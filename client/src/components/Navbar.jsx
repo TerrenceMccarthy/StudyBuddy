@@ -10,7 +10,7 @@ function getInitials(name) {
 
 export default function Navbar({ onCreatePost }) {
   const location = useLocation()
-  const { user, logout } = useUser()
+  const { user, profile, logout } = useUser()
   const [menuOpen, setMenuOpen] = useState(false)
 
   const fullName = user?.user_metadata?.full_name || user?.email || ''
@@ -48,7 +48,7 @@ export default function Navbar({ onCreatePost }) {
               className={styles.avatarBtn}
               onClick={() => setMenuOpen(o => !o)}
             >
-              <div className={styles.avatar}>{initials}</div>
+              <div className={styles.avatar} style={{ background: profile?.avatar_color || undefined }}>{initials}</div>
             </button>
 
             {menuOpen && (

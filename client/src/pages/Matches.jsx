@@ -53,6 +53,7 @@ function MatchCard({ match, onMessage, onLeave }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const post = match.posts
   const hostName = post?.profiles?.full_name || 'Unknown'
+  const hostAvatarColor = post?.profiles?.avatar_color || getAvatarColor(hostName)
   const subjectColor = SUBJECT_COLORS[post?.subject] || { bg: '#f0f0f0', text: '#555' }
   const status = STATUS_CONFIG[getStatus(post?.time)]
 
@@ -60,7 +61,7 @@ function MatchCard({ match, onMessage, onLeave }) {
     <div className={`${styles.card} ${getStatus(post?.time) === 'completed' ? styles.cardDim : ''}`}>
       <div className={styles.cardHeader}>
         <div className={styles.avatarWrap}>
-          <div className={styles.avatar} style={{ background: getAvatarColor(hostName) }}>
+          <div className={styles.avatar} style={{ background: hostAvatarColor }}>
             {getInitials(hostName)}
           </div>
           <div className={styles.posterInfo}>
@@ -151,13 +152,14 @@ function MessageModal({ match, onClose }) {
   if (!match) return null
   const post = match.posts
   const hostName = post?.profiles?.full_name || 'Host'
+  const hostAvatarColor = post?.profiles?.avatar_color || getAvatarColor(hostName)
 
   return (
     <div className={styles.modalBackdrop} onClick={onClose}>
       <div className={styles.modal} onClick={e => e.stopPropagation()}>
         <div className={styles.modalHeader}>
           <div className={styles.modalTitleRow}>
-            <div className={styles.avatar} style={{ background: getAvatarColor(hostName), width: 32, height: 32, fontSize: '0.65rem' }}>
+            <div className={styles.avatar} style={{ background: hostAvatarColor, width: 32, height: 32, fontSize: '0.65rem' }}>
               {getInitials(hostName)}
             </div>
             <div>
@@ -223,7 +225,7 @@ export default function Matches() {
           duration,
           status,
           user_id,
-          profiles ( full_name )
+          profiles ( full_name, avatar_color )
         )
       `)
       .eq('user_id', user.id)

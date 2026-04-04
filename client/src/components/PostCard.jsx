@@ -39,7 +39,7 @@ export default function PostCard({ post, index, onAccept }) {
   // Support both real Supabase data and mock data shapes
   const authorName = post.host_name || post.author || 'Unknown'
   const avatarInitials = post.avatar || getInitials(authorName)
-  const avatarColor = post.avatarColor || getAvatarColor(authorName)
+  const avatarColor = post.host_avatar_color || post.avatarColor || getAvatarColor(authorName)
   const postedAgo = post.postedAgo || timeAgo(post.created_at)
   const courseTitle = post.course || post.topic
   const notes = post.notes || post.topic
