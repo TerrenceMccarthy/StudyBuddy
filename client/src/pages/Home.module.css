@@ -242,10 +242,10 @@
 }
 
 @media (max-width: 640px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
-  .heroTitle {
-    font-size: 2rem;
+  .grid { grid-template-columns: 1fr; }
+  .heroTitle { font-size: 2rem; }
+  .hero, .controls, .content {
+    padding-left: 1.1rem;
+    padding-right: 1.1rem;
   }
 }

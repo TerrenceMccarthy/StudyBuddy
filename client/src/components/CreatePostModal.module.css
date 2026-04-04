@@ -190,3 +190,16 @@
   margin: 0;
   line-height: 1.5;
 }
+
+@media (max-width: 600px) {
+  .modal {
+    border-radius: 16px;
+  }
+  .modalHeader, .form {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+  .row {
+    flex-direction: column;
+  }
+}

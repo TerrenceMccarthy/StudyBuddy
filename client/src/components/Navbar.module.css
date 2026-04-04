@@ -173,3 +173,86 @@
   color: #c0392b;
   border-top: 1px solid #f0ebe2;
 }
+
+/* ── Hamburger button (hidden on desktop) ─────────────── */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 8px;
+  transition: background 0.15s;
+}
+
+.hamburger:hover { background: var(--cream-dark); }
+
+.hamburger span {
+  display: block;
+  height: 2px;
+  background: var(--ink);
+  border-radius: 2px;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+/* X state */
+.barTop  { transform: translateY(7px) rotate(45deg); }
+.barMid  { opacity: 0; }
+.barBot  { transform: translateY(-7px) rotate(-45deg); }
+
+/* ── Mobile dropdown menu ─────────────────────────────── */
+.mobileMenu {
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem 1rem 1rem;
+  border-top: 1px solid var(--border);
+  background: rgba(247, 243, 237, 0.97);
+  backdrop-filter: blur(12px);
+  gap: 0.25rem;
+}
+
+.mobileLink {
+  padding: 0.7rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--ink-light);
+  border-radius: 10px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.mobileLink:hover { background: var(--cream-dark); color: var(--ink); }
+
+.mobileLinkActive {
+  color: var(--ink);
+  background: var(--cream-dark);
+  font-weight: 600;
+}
+
+.mobilePostBtn {
+  margin-top: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--ink);
+  color: var(--cream);
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 12px;
+  text-align: center;
+  transition: background 0.15s;
+}
+
+.mobilePostBtn:hover { background: var(--amber); }
+
+/* ── Responsive breakpoint ────────────────────────────── */
+@media (max-width: 640px) {
+  .links   { display: none; }
+  .postBtn { display: none; }
+  .hamburger { display: flex; }
+
+  .inner { gap: 0; }
+  .actions { gap: 8px; margin-left: auto; }
+}
