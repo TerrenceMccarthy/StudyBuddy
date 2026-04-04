@@ -123,7 +123,7 @@ function MatchCard({ match, onMessage, onLeave }) {
 
         <div className={styles.footerActions}>
           <span className={styles.participants}>
-            👥 {post?.match_count || 0} joined
+            👥 {post?.matches?.[0]?.count || 0} joined
           </span>
           {getStatus(post?.time) === 'upcoming' && (
             <button className={styles.msgBtn} onClick={() => onMessage(match)}>
@@ -137,16 +137,52 @@ function MatchCard({ match, onMessage, onLeave }) {
 }
 
 function MessageModal({ match, onClose }) {
+  const { user } = useUser()
   const [msg, setMsg] = useState('')
-  const [sent, setSent] = useState([
-    { from: 'them', text: 'Hey! Looking forward to the session.', time: '10:30 AM' },
-    { from: 'me', text: "I'll bring my notes!", time: '10:32 AM' },
-  ])
+  const [messages, setMessages] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [posting, setPosting] = useState(false)
 
-  const handleSend = () => {
-    if (!msg.trim()) return
-    setSent(s => [...s, { from: 'me', text: msg, time: 'Now' }])
+  const postId = match?.posts?.id
+
+  const fetchMessages = async () => {
+    const { data, error } = await supabase
+      .from('messages')
+      .select('id, text, created_at, sender_id')
+      .eq('post_id', postId)
+      .order('created_at', { ascending: true })
+
+    if (error) { console.error('fetch messages error:', error); setLoading(false); return }
+
+    // Fetch sender names separately to avoid FK join issues
+    const senderIds = [...new Set((data || []).map(m => m.sender_id))]
+    let nameMap = {}
+    if (senderIds.length > 0) {
+      const { data: profiles } = await supabase
+        .from('profiles')
+        .select('id, full_name')
+        .in('id', senderIds)
+      ;(profiles || []).forEach(p => { nameMap[p.id] = p.full_name })
+    }
+
+    setMessages((data || []).map(m => ({ ...m, senderName: nameMap[m.sender_id] || 'Unknown' })))
+    setLoading(false)
+  }
+
+  useEffect(() => {
+    if (!postId) return
+    fetchMessages()
+  }, [postId])
+
+  const handleSend = async () => {
+    if (!msg.trim() || !user) return
+    setPosting(true)
+    const text = msg.trim()
     setMsg('')
+    const { error } = await supabase.from('messages').insert({ post_id: postId, sender_id: user.id, text })
+    if (error) { console.error('send message error:', error); setMsg(text) }
+    await fetchMessages()
+    setPosting(false)
   }
 
   if (!match) return null
@@ -171,12 +207,26 @@ function MessageModal({ match, onClose }) {
         </div>
 
         <div className={styles.chatBody}>
-          {sent.map((m, i) => (
-            <div key={i} className={`${styles.bubble} ${m.from === 'me' ? styles.bubbleMe : styles.bubbleThem}`}>
-              <p className={styles.bubbleText}>{m.text}</p>
-              <span className={styles.bubbleTime}>{m.time}</span>
-            </div>
-          ))}
+          {loading ? (
+            <p className={styles.chatEmpty}>Loading messages...</p>
+          ) : messages.length === 0 ? (
+            <p className={styles.chatEmpty}>No messages yet. Say hi! 👋</p>
+          ) : (
+            messages.map((m) => {
+              const isMe = m.sender_id === user?.id
+              return (
+                <div key={m.id} className={`${styles.bubble} ${isMe ? styles.bubbleMe : styles.bubbleThem}`}>
+                  {!isMe && (
+                    <span className={styles.bubbleName}>{m.senderName}</span>
+                  )}
+                  <p className={styles.bubbleText}>{m.text}</p>
+                  <span className={styles.bubbleTime}>
+                    {new Date(m.created_at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+                  </span>
+                </div>
+              )
+            })
+          )}
         </div>
 
         <div className={styles.chatInput}>
@@ -187,7 +237,9 @@ function MessageModal({ match, onClose }) {
             onChange={e => setMsg(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && handleSend()}
           />
-          <button className={styles.sendBtn} onClick={handleSend}>Send</button>
+          <button className={styles.sendBtn} onClick={handleSend} disabled={posting}>
+            {posting ? '...' : 'Post'}
+          </button>
         </div>
       </div>
     </div>
@@ -225,7 +277,8 @@ export default function Matches() {
           duration,
           status,
           user_id,
-          profiles ( full_name, avatar_color )
+          profiles ( full_name, avatar_color ),
+          matches ( count )
         )
       `)
       .eq('user_id', user.id)

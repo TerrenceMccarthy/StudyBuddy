@@ -685,3 +685,18 @@
   padding: 0.55rem 0.85rem;
   margin: 0;
 }
+.bubbleName {
+  font-family: system-ui, sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #999;
+  padding: 0 0.2rem;
+}
+
+.chatEmpty {
+  font-family: system-ui, sans-serif;
+  font-size: 0.88rem;
+  color: #bbb;
+  text-align: center;
+  margin: auto;
+}
