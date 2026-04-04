@@ -158,7 +158,7 @@ export default function Register({ onNavigateToLogin }) {
 
       <div className={styles.card}>
         <div className={styles.cardTop}>
-          <div className={styles.logo}>📖 <span>Study</span><em>Buddy</em></div>
+          <div className={styles.logo}><span>Study</span><em>Buddy</em></div>
           <h1 className={styles.heading}>Create your account</h1>
           <p className={styles.sub}>UTA students only — use your Mav email.</p>
         </div>

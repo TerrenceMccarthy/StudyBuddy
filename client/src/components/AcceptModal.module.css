@@ -109,3 +109,53 @@
   box-shadow: 0 4px 14px rgba(44,110,106,0.3);
   transform: translateY(-1px);
 }
+
+/* ── In-person warning ────────────────────────────────── */
+.warning {
+  background: #fff8e1;
+  border: 1.5px solid #f9a825;
+  border-radius: 12px;
+  padding: 1rem 1.1rem;
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.warningHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.warningIcon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.warningTitle {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #e65100;
+}
+
+.warningText {
+  font-size: 0.8rem;
+  color: #555;
+  margin: 0 0 0.5rem;
+  line-height: 1.5;
+}
+
+.warningList {
+  font-size: 0.8rem;
+  color: #555;
+  margin: 0;
+  padding-left: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.28rem;
+  line-height: 1.45;
+}
+
+.warningList strong {
+  color: #e65100;
+}

@@ -3,7 +3,7 @@ import { supabase } from '../lib/supabaseClient'
 import PostCard from '../components/PostCard'
 import styles from './Home.module.css'
 
-const FILTERS = ["All", "Computer Science", "Mathematics", "Biology", "Chemistry", "English", "History"]
+const FILTERS = ["All", "Computer Science", "Mathematics", "Biology", "Chemistry", "English", "History", "Physics", "Business", "Psychology", "Medical", "Arts"]
 
 export default function Home({ onAccept }) {
   const [posts, setPosts] = useState([])

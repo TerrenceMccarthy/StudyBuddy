@@ -35,7 +35,7 @@ export default function Login({ onNavigateToRegister }) {
 
       <div className={styles.card}>
         <div className={styles.cardTop}>
-          <div className={styles.logo}>📖 <span>Study</span><em>Buddy</em></div>
+          <div className={styles.logo}><span>Study</span><em>Buddy</em></div>
           <h1 className={styles.heading}>Welcome back</h1>
           <p className={styles.sub}>Sign in to find your next study session.</p>
         </div>
