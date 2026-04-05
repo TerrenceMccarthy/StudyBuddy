@@ -108,9 +108,6 @@ export default function PostCard({ post, index, onAccept }) {
             Join Session
           </button>
         )}
-        <button className={styles.moreBtn} title="More options">
-          ···
-        </button>
       </div>
     </article>
   )
