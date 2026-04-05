@@ -12,10 +12,6 @@ const SUBJECT_COLORS = {
   'History':          { bg: '#fce4ec', text: '#b71c5a' },
 }
 
-const SUBJECT_INITIALS = {
-  'Computer Science': 'CS', 'Mathematics': 'MA', 'Biology': 'BI',
-  'Chemistry': 'CH', 'English': 'EN', 'History': 'HI',
-}
 
 const STATUS_CONFIG = {
   open:    { label: 'Open',    dot: '#4caf50', bg: '#e8f5e9', text: '#2e7d32' },
@@ -47,7 +43,7 @@ function getDisplayStatus(post) {
   return post.status
 }
 
-function PostCard({ post, onEdit, onDelete, onClose, avatarColor }) {
+function PostCard({ post, onEdit, onDelete, onClose, avatarColor, initials }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const subjectColor = SUBJECT_COLORS[post.subject] || { bg: '#f0f0f0', text: '#555' }
   const displayStatus = getDisplayStatus(post)
@@ -59,7 +55,7 @@ function PostCard({ post, onEdit, onDelete, onClose, avatarColor }) {
       <div className={styles.cardHeader}>
         <div className={styles.avatarWrap}>
           <div className={styles.avatar} style={{ background: avatarColor || subjectColor.text }}>
-            {SUBJECT_INITIALS[post.subject] || 'ME'}
+            {initials || 'ME'}
           </div>
           <div className={styles.posterInfo}>
             <span className={styles.posterName}>You</span>
@@ -113,6 +109,11 @@ function PostCard({ post, onEdit, onDelete, onClose, avatarColor }) {
       </div>
     </div>
   )
+}
+
+function getInitials(name) {
+  if (!name) return '?'
+  return name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
 }
 
 export default function MyPosts() {
@@ -317,6 +318,7 @@ export default function MyPosts() {
                 onDelete={handleDelete}
                 onClose={handleClose}
                 avatarColor={profile?.avatar_color}
+                initials={getInitials(profile?.full_name || user?.email || '')}
               />
             ))}
           </div>
