@@ -5,7 +5,7 @@ import styles from './Home.module.css'
 
 const FILTERS = ["All", "Computer Science", "Mathematics", "Biology", "Chemistry", "English", "History", "Business", "Psychology", "Physics", "Medical", "Arts"]
 
-export default function Home({ onAccept }) {
+export default function Home({ onAccept, refreshKey }) {
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(true)
   const [activeFilter, setActiveFilter] = useState("All")
@@ -36,7 +36,7 @@ export default function Home({ onAccept }) {
     setLoading(false)
   }
 
-  useEffect(() => { fetchPosts() }, [])
+  useEffect(() => { fetchPosts() }, [refreshKey])
 
   const filtered = posts.filter(p => {
     const matchFilter = activeFilter === "All" || p.subject === activeFilter

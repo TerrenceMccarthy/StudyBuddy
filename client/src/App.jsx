@@ -30,6 +30,7 @@ function AppContent() {
   const [showCreate, setShowCreate] = useState(false)
   const [acceptPost, setAcceptPost] = useState(null)
   const [spamError, setSpamError] = useState('')
+  const [homeRefreshKey, setHomeRefreshKey] = useState(0)
 
   const handleCreateSubmit = async (form) => {
     if (!user) return
@@ -64,6 +65,7 @@ function AppContent() {
     }
 
     setShowCreate(false)
+    setHomeRefreshKey(k => k + 1)
   }
 
   const handleAcceptConfirm = async (postId) => {
@@ -83,7 +85,7 @@ function AppContent() {
         <Route path="/register" element={<GuestRoute><Register onNavigateToLogin={() => window.location.href = '/login'} /></GuestRoute>} />
 
         {/* Protected routes */}
-        <Route path="/" element={<ProtectedRoute><Navbar onCreatePost={() => { setSpamError(''); setShowCreate(true) }} /><Home onAccept={setAcceptPost} /></ProtectedRoute>} />
+        <Route path="/" element={<ProtectedRoute><Navbar onCreatePost={() => { setSpamError(''); setShowCreate(true) }} /><Home onAccept={setAcceptPost} refreshKey={homeRefreshKey} /></ProtectedRoute>} />
         <Route path="/profile" element={<ProtectedRoute><Navbar onCreatePost={() => { setSpamError(''); setShowCreate(true) }} /><Profile /></ProtectedRoute>} />
         <Route path="/posts" element={<ProtectedRoute><Navbar onCreatePost={() => { setSpamError(''); setShowCreate(true) }} /><MyPosts /></ProtectedRoute>} />
         <Route path="/matches" element={<ProtectedRoute><Navbar onCreatePost={() => { setSpamError(''); setShowCreate(true) }} /><Matches /></ProtectedRoute>} />
