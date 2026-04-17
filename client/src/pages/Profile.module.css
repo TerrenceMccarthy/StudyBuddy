@@ -336,6 +336,11 @@
   gap: 0.4rem;
 }
 
+.expiredLabel {
+  color: #f59e0b;
+  font-weight: 600;
+}
+
 .dot { color: #ccc; }
 
 .activityBadge {

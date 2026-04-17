@@ -1,0 +1,86 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  transition: all var(--transition);
+  cursor: pointer;
+  border: none;
+  outline: none;
+  position: relative;
+  min-width: 120px;
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Primary variant - teal */
+.button.primary {
+  background: var(--teal);
+  color: white;
+}
+
+.button.primary:hover:not(:disabled) {
+  background: var(--teal-light);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.button.primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Secondary variant - amber */
+.button.secondary {
+  background: var(--amber);
+  color: white;
+}
+
+.button.secondary:hover:not(:disabled) {
+  background: var(--amber-light);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.button.secondary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Danger variant - red */
+.button.danger {
+  background: var(--red);
+  color: white;
+}
+
+.button.danger:hover:not(:disabled) {
+  background: #d44334;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.button.danger:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Loading spinner */
+.buttonSpinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

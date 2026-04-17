@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabaseClient'
 import { useUser } from '../context/UserContext'
+import { validateSessionTime } from '../utils/validation'
+import { getSessionStatus } from '../utils/sessionStatus'
 import styles from './MyPosts.module.css'
 
 const SUBJECT_COLORS = {
@@ -36,17 +38,10 @@ function formatTime(dateStr) {
   })
 }
 
-// Derive the real display status — expired overrides open/matched
-function getDisplayStatus(post) {
-  const isPast = post.time && new Date(post.time) < new Date()
-  if (isPast && post.status !== 'closed') return 'expired'
-  return post.status
-}
-
 function PostCard({ post, onEdit, onDelete, onClose, avatarColor, initials }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const subjectColor = SUBJECT_COLORS[post.subject] || { bg: '#f0f0f0', text: '#555' }
-  const displayStatus = getDisplayStatus(post)
+  const displayStatus = getSessionStatus(post)
   const status = STATUS_CONFIG[displayStatus]
   const isDim = displayStatus === 'closed' || displayStatus === 'expired'
 
@@ -160,7 +155,7 @@ export default function MyPosts() {
   useEffect(() => { fetchPosts() }, [user])
 
   // Apply display status before filtering
-  const postsWithStatus = posts.map(p => ({ ...p, _displayStatus: getDisplayStatus(p) }))
+  const postsWithStatus = posts.map(p => ({ ...p, _displayStatus: getSessionStatus(p) }))
 
   const filtered = postsWithStatus.filter(p =>
     activeFilter === 'all' || p._displayStatus === activeFilter
@@ -205,11 +200,14 @@ export default function MyPosts() {
       setFormError('Please fill in all fields.')
       return
     }
-    // Prevent creating a post in the past
-    if (new Date(form.time) < new Date()) {
-      setFormError('Please choose a future date and time.')
+    
+    // Use centralized validation utility
+    const timeValidation = validateSessionTime(form.time)
+    if (!timeValidation.valid) {
+      setFormError(timeValidation.error)
       return
     }
+    
     setSaving(true)
     if (editingPost) {
       const { error } = await supabase.from('posts').update({ ...form }).eq('id', editingPost.id)

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabaseClient'
 import { useUser } from '../context/UserContext'
+import { getSessionStatus } from '../utils/sessionStatus'
 import styles from './Profile.module.css'
 
 const AVATAR_COLORS = [
@@ -75,7 +76,7 @@ export default function Profile() {
     // Fetch hosted posts
     const { data: hostedPosts } = await supabase
       .from('posts')
-      .select('id, course, subject, created_at')
+      .select('id, course, subject, created_at, time, status')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
       .limit(10)
@@ -83,7 +84,7 @@ export default function Profile() {
     // Fetch joined sessions
     const { data: joinedMatches } = await supabase
       .from('matches')
-      .select('id, created_at, posts(course, subject)')
+      .select('id, created_at, posts(course, subject, time, status)')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
       .limit(10)
@@ -94,6 +95,8 @@ export default function Profile() {
       course: p.course,
       subject: p.subject,
       created_at: p.created_at,
+      time: p.time,
+      status: p.status,
     }))
 
     const joinedActivity = (joinedMatches || []).map(m => ({
@@ -101,6 +104,8 @@ export default function Profile() {
       course: m.posts?.course,
       subject: m.posts?.subject,
       created_at: m.created_at,
+      time: m.posts?.time,
+      status: m.posts?.status,
     }))
 
     const merged = [...hostedActivity, ...joinedActivity]
@@ -294,6 +299,9 @@ export default function Profile() {
           <div className={styles.activityList}>
             {activity.map((item, i) => {
               const c = SUBJECT_COLORS[item.subject] || { bg: '#f0f0f0', text: '#555' }
+              const displayStatus = getSessionStatus({ time: item.time, status: item.status })
+              const isExpired = displayStatus === 'expired'
+              
               return (
                 <div key={i} className={styles.activityRow}>
                   <div
@@ -308,6 +316,12 @@ export default function Profile() {
                       <span>{item.type === 'hosted' ? 'You hosted' : 'You joined'}</span>
                       <span className={styles.dot}>·</span>
                       <span>{timeAgo(item.created_at)}</span>
+                      {isExpired && (
+                        <>
+                          <span className={styles.dot}>·</span>
+                          <span className={styles.expiredLabel}>Expired</span>
+                        </>
+                      )}
                     </p>
                   </div>
                   <span className={styles.activityBadge} style={{ background: c.bg, color: c.text }}>

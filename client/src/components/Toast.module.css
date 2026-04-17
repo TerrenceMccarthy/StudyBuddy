@@ -1,0 +1,94 @@
+.toast {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 18px;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  min-width: 300px;
+  max-width: 500px;
+  animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.icon {
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.message {
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.dismiss {
+  padding: 4px;
+  border-radius: 4px;
+  font-size: 1rem;
+  line-height: 1;
+  opacity: 0.6;
+  transition: all var(--transition);
+  flex-shrink: 0;
+}
+
+.dismiss:hover {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.08);
+}
+
+/* Success toast - green */
+.success {
+  background: rgba(122, 158, 126, 0.95);
+  color: white;
+  border-color: rgba(122, 158, 126, 0.3);
+}
+
+.success .dismiss:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Error toast - red */
+.error {
+  background: rgba(192, 57, 43, 0.95);
+  color: white;
+  border-color: rgba(192, 57, 43, 0.3);
+}
+
+.error .dismiss:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Info toast - teal */
+.info {
+  background: rgba(44, 110, 106, 0.95);
+  color: white;
+  border-color: rgba(44, 110, 106, 0.3);
+}
+
+.info .dismiss:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

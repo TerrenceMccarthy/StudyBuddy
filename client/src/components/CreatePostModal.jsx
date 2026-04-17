@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import styles from './CreatePostModal.module.css'
+import { validateSessionTime } from '../utils/validation'
 
 const SUBJECTS = [
   "Computer Science", "Mathematics", "Biology", "Chemistry",
@@ -12,11 +13,25 @@ export default function CreatePostModal({ onClose, onSubmit, spamError }) {
     date: '', time: '', duration: '', notes: ''
   })
   const [submitting, setSubmitting] = useState(false)
+  const [validationError, setValidationError] = useState('')
 
   const set = (field, val) => setForm(f => ({ ...f, [field]: val }))
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setValidationError('')
+    
+    // Validate session time is in the future
+    if (form.date && form.time) {
+      const dateTimeString = `${form.date}T${form.time}`
+      const validation = validateSessionTime(dateTimeString)
+      
+      if (!validation.valid) {
+        setValidationError(validation.error)
+        return
+      }
+    }
+    
     setSubmitting(true)
     await onSubmit(form)
     setSubmitting(false)
@@ -135,6 +150,14 @@ export default function CreatePostModal({ onClose, onSubmit, spamError }) {
               rows={3}
             />
           </div>
+
+          {/* ── Validation error ── */}
+          {validationError && (
+            <div className={styles.spamError}>
+              <span className={styles.spamIcon}>⚠️</span>
+              <p className={styles.spamText}>{validationError}</p>
+            </div>
+          )}
 
           {/* ── Spam error ── */}
           {spamError && (
