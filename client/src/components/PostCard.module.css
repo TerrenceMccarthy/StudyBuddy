@@ -24,6 +24,12 @@
   gap: 12px;
 }
 
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .authorRow {
   display: flex;
   align-items: center;
@@ -42,6 +48,7 @@
   font-weight: 700;
   letter-spacing: 0.04em;
   flex-shrink: 0;
+  object-fit: cover;
 }
 
 .authorInfo {
@@ -174,4 +181,69 @@
 .moreBtn:hover {
   background: var(--cream-dark);
   color: var(--ink);
+}
+
+.shareBtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-light);
+  transition: all var(--transition);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.shareBtn:hover {
+  background: var(--cream-dark);
+  color: var(--teal);
+}
+
+.shareBtn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Moderator action buttons */
+.moderatorActions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.moderatorBtn {
+  padding: 6px 14px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 18px;
+  transition: all var(--transition);
+  letter-spacing: 0.01em;
+  background: var(--cream-dark);
+  color: var(--ink);
+  border: 1px solid var(--border);
+}
+
+.moderatorBtn:hover {
+  background: var(--teal);
+  color: white;
+  border-color: var(--teal);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(44,110,106,0.2);
+}
+
+.moderatorDeleteBtn {
+  background: #fee;
+  color: #c33;
+  border-color: #fcc;
+}
+
+.moderatorDeleteBtn:hover {
+  background: #c33;
+  color: white;
+  border-color: #c33;
+  box-shadow: 0 2px 8px rgba(204,51,51,0.2);
 }

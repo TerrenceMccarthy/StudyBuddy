@@ -10,8 +10,12 @@ import MyPosts from './pages/MyPosts'
 import Matches from './pages/Matches'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import ForgotPassword from './pages/ForgotPassword'
+import ResetPassword from './pages/ResetPassword'
+import SessionDetail from './pages/SessionDetail'
 import CreatePostModal from './components/CreatePostModal'
 import AcceptModal from './components/AcceptModal'
+import ShareModal from './components/ShareModal'
 
 function ProtectedRoute({ children }) {
   const { user } = useUser()
@@ -29,6 +33,7 @@ function AppContent() {
   const { user } = useUser()
   const [showCreate, setShowCreate] = useState(false)
   const [acceptPost, setAcceptPost] = useState(null)
+  const [shareSession, setShareSession] = useState(null)
   const [spamError, setSpamError] = useState('')
   const [homeRefreshKey, setHomeRefreshKey] = useState(0)
 
@@ -74,7 +79,12 @@ function AppContent() {
       post_id: postId,
       user_id: user.id,
     })
-    if (error) console.error('Error joining session:', error.message)
+    if (error) {
+      console.error('Error joining session:', error.message)
+    } else {
+      // Refresh Home page to show updated match count
+      setHomeRefreshKey(k => k + 1)
+    }
   }
 
   return (
@@ -83,11 +93,16 @@ function AppContent() {
         {/* Guest only routes */}
         <Route path="/login" element={<GuestRoute><Login onNavigateToRegister={() => window.location.href = '/register'} /></GuestRoute>} />
         <Route path="/register" element={<GuestRoute><Register onNavigateToLogin={() => window.location.href = '/login'} /></GuestRoute>} />
+        <Route path="/forgot-password" element={<GuestRoute><ForgotPassword /></GuestRoute>} />
+        <Route path="/reset-password" element={<GuestRoute><ResetPassword /></GuestRoute>} />
+
+        {/* Public session detail route */}
+        <Route path="/session/:id" element={<SessionDetail />} />
 
         {/* Protected routes */}
-        <Route path="/" element={<ProtectedRoute><Navbar onCreatePost={() => { setSpamError(''); setShowCreate(true) }} /><Home onAccept={setAcceptPost} refreshKey={homeRefreshKey} /></ProtectedRoute>} />
-        <Route path="/profile" element={<ProtectedRoute><Navbar onCreatePost={() => { setSpamError(''); setShowCreate(true) }} /><Profile /></ProtectedRoute>} />
-        <Route path="/posts" element={<ProtectedRoute><Navbar onCreatePost={() => { setSpamError(''); setShowCreate(true) }} /><MyPosts /></ProtectedRoute>} />
+        <Route path="/" element={<ProtectedRoute><Navbar onCreatePost={() => { setSpamError(''); setShowCreate(true) }} /><Home onAccept={setAcceptPost} onShare={setShareSession} refreshKey={homeRefreshKey} /></ProtectedRoute>} />
+        <Route path="/profile" element={<ProtectedRoute><Navbar onCreatePost={() => { setSpamError(''); setShowCreate(true) }} /><Profile onShare={setShareSession} /></ProtectedRoute>} />
+        <Route path="/posts" element={<ProtectedRoute><Navbar onCreatePost={() => { setSpamError(''); setShowCreate(true) }} /><MyPosts onShare={setShareSession} /></ProtectedRoute>} />
         <Route path="/matches" element={<ProtectedRoute><Navbar onCreatePost={() => { setSpamError(''); setShowCreate(true) }} /><Matches /></ProtectedRoute>} />
 
         <Route path="*" element={<Navigate to="/" replace />} />
@@ -109,6 +124,13 @@ function AppContent() {
             await handleAcceptConfirm(postId)
             setAcceptPost(null)
           }}
+        />
+      )}
+
+      {shareSession && (
+        <ShareModal
+          session={shareSession}
+          onClose={() => setShareSession(null)}
         />
       )}
     </>

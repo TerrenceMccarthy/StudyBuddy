@@ -224,6 +224,7 @@
   font-weight: 700;
   color: #fff;
   flex-shrink: 0;
+  object-fit: cover;
 }
 
 .posterInfo {

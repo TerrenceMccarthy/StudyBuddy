@@ -366,6 +366,26 @@
   margin: 0;
 }
 
+/* ── Forgot Password ──────────────────────────────────── */
+.forgotPassword {
+  text-align: center;
+  margin: 0.75rem 0 0;
+}
+
+.forgotLink {
+  font-family: system-ui, sans-serif;
+  font-size: 0.85rem;
+  color: #2d7a6b;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.15s;
+}
+
+.forgotLink:hover {
+  color: #235f54;
+  text-decoration: underline;
+}
+
 /* ── Switch link ──────────────────────────────────────── */
 .switchText {
   font-family: system-ui, sans-serif;

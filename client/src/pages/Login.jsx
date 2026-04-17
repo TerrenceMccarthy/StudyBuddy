@@ -70,6 +70,12 @@ export default function Login({ onNavigateToRegister }) {
           <button className={styles.submitBtn} type="submit" disabled={loading}>
             {loading ? 'Signing in...' : 'Sign In'}
           </button>
+
+          <p className={styles.forgotPassword}>
+            <a href="/forgot-password" className={styles.forgotLink}>
+              Forgot password?
+            </a>
+          </p>
         </form>
 
         <div className={styles.divider}><span>or</span></div>

@@ -12,7 +12,7 @@ export function UserProvider({ children }) {
     if (!userId) { setProfile(null); return }
     const { data } = await supabase
       .from('profiles')
-      .select('id, full_name, avatar_color')
+      .select('id, full_name, avatar_color, is_moderator')
       .eq('id', userId)
       .single()
     if (data) setProfile(data)

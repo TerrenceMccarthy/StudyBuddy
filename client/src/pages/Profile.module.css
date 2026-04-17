@@ -71,6 +71,7 @@
   justify-content: center;
   border: 3px solid #fff;
   box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+  object-fit: cover;
 }
 
 .avatarStatus {
@@ -352,6 +353,86 @@
   flex-shrink: 0;
 }
 
+.editSessionBtn {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  padding: 0.4rem 0.6rem;
+  cursor: pointer;
+  color: #888;
+  border-radius: 6px;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+
+.editSessionBtn:hover {
+  background: #f5f0e8;
+  color: #2d7a6b;
+}
+
+/* ── Menu (three-dot) ─────────────────────────────────── */
+.menuWrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.menuBtn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  padding: 0.4rem 0.6rem;
+  cursor: pointer;
+  color: #888;
+  border-radius: 6px;
+  transition: all 0.15s;
+  line-height: 1;
+}
+
+.menuBtn:hover {
+  background: #f5f0e8;
+  color: #2d7a6b;
+}
+
+.menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #fff;
+  border: 1px solid #e8e0d2;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  min-width: 140px;
+  z-index: 10;
+  overflow: hidden;
+  margin-top: 0.25rem;
+}
+
+.menu button {
+  display: block;
+  width: 100%;
+  padding: 0.65rem 1rem;
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 0.85rem;
+  color: #444;
+  cursor: pointer;
+  transition: background 0.15s;
+  font-family: system-ui, sans-serif;
+}
+
+.menu button:hover {
+  background: #f5f0e8;
+}
+
+.menuDelete {
+  color: #d32f2f !important;
+}
+
+.menuDelete:hover {
+  background: #ffebee !important;
+}
+
 /* ── Empty ────────────────────────────────────────────── */
 .empty {
   text-align: center;
@@ -603,4 +684,102 @@
 .colorPreviewLabel {
   font-size: 0.8rem;
   color: #888;
+}
+
+.formError {
+  font-size: 0.85rem;
+  color: #d32f2f;
+  margin: 0.5rem 0 0;
+  padding: 0.5rem 0.75rem;
+  background: #ffebee;
+  border-radius: 8px;
+  border-left: 3px solid #d32f2f;
+}
+
+/* ── Profile Picture Upload ─────────────────────────── */
+.pictureUploadSection {
+  display: flex;
+  gap: 1.25rem;
+  align-items: center;
+  padding: 1rem;
+  background: #fafaf8;
+  border-radius: 12px;
+  border: 1.5px solid #e8e0d2;
+}
+
+.picturePreviewWrap {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+}
+
+.picturePreview {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.picturePreviewFallback {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.4rem;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.pictureUploadControls {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.pictureInput {
+  display: none;
+}
+
+.pictureUploadBtn {
+  display: inline-block;
+  padding: 0.5rem 1.25rem;
+  border-radius: 999px;
+  border: 1.5px solid #2d7a6b;
+  background: #fff;
+  color: #2d7a6b;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: center;
+  width: fit-content;
+}
+
+.pictureUploadBtn:hover {
+  background: #2d7a6b;
+  color: #fff;
+}
+
+.pictureHint {
+  font-size: 0.75rem;
+  color: #999;
+  margin: 0;
+}
+
+.pictureError {
+  font-size: 0.8rem;
+  color: #d32f2f;
+  margin: 0;
+  padding: 0.4rem 0.6rem;
+  background: #ffebee;
+  border-radius: 6px;
+  border-left: 2px solid #d32f2f;
 }

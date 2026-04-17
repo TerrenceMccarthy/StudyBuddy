@@ -54,6 +54,7 @@ function MatchCard({ match, onMessage, onLeave }) {
   const post = match.posts
   const hostName = post?.profiles?.full_name || 'Unknown'
   const hostAvatarColor = post?.profiles?.avatar_color || getAvatarColor(hostName)
+  const profilePictureUrl = post?.profiles?.profile_picture_url || null
   const subjectColor = SUBJECT_COLORS[post?.subject] || { bg: '#f0f0f0', text: '#555' }
   const status = STATUS_CONFIG[getStatus(post?.time)]
 
@@ -61,7 +62,21 @@ function MatchCard({ match, onMessage, onLeave }) {
     <div className={`${styles.card} ${getStatus(post?.time) === 'completed' ? styles.cardDim : ''}`}>
       <div className={styles.cardHeader}>
         <div className={styles.avatarWrap}>
-          <div className={styles.avatar} style={{ background: hostAvatarColor }}>
+          {profilePictureUrl ? (
+            <img 
+              src={profilePictureUrl} 
+              alt={hostName}
+              className={styles.avatar}
+              onError={(e) => {
+                e.target.style.display = 'none'
+                e.target.nextSibling.style.display = 'flex'
+              }}
+            />
+          ) : null}
+          <div className={styles.avatar} style={{ 
+            background: hostAvatarColor,
+            display: profilePictureUrl ? 'none' : 'flex'
+          }}>
             {getInitials(hostName)}
           </div>
           <div className={styles.posterInfo}>
@@ -189,13 +204,32 @@ function MessageModal({ match, onClose }) {
   const post = match.posts
   const hostName = post?.profiles?.full_name || 'Host'
   const hostAvatarColor = post?.profiles?.avatar_color || getAvatarColor(hostName)
+  const profilePictureUrl = post?.profiles?.profile_picture_url || null
 
   return (
     <div className={styles.modalBackdrop} onClick={onClose}>
       <div className={styles.modal} onClick={e => e.stopPropagation()}>
         <div className={styles.modalHeader}>
           <div className={styles.modalTitleRow}>
-            <div className={styles.avatar} style={{ background: hostAvatarColor, width: 32, height: 32, fontSize: '0.65rem' }}>
+            {profilePictureUrl ? (
+              <img 
+                src={profilePictureUrl} 
+                alt={hostName}
+                className={styles.avatar}
+                style={{ width: 32, height: 32, fontSize: '0.65rem' }}
+                onError={(e) => {
+                  e.target.style.display = 'none'
+                  e.target.nextSibling.style.display = 'flex'
+                }}
+              />
+            ) : null}
+            <div className={styles.avatar} style={{ 
+              background: hostAvatarColor, 
+              width: 32, 
+              height: 32, 
+              fontSize: '0.65rem',
+              display: profilePictureUrl ? 'none' : 'flex'
+            }}>
               {getInitials(hostName)}
             </div>
             <div>
@@ -277,7 +311,7 @@ export default function Matches() {
           duration,
           status,
           user_id,
-          profiles ( full_name, avatar_color ),
+          profiles ( full_name, avatar_color, profile_picture_url ),
           matches ( count )
         )
       `)

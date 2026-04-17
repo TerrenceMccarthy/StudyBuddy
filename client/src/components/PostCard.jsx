@@ -1,5 +1,6 @@
 import styles from './PostCard.module.css'
 import { subjectColors } from '../data/mockData'
+import { formatSessionTime, timeAgo as formatTimeAgo } from '../utils/time'
 
 function timeAgo(dateStr) {
   const diff = Math.floor((Date.now() - new Date(dateStr)) / 1000)
@@ -8,14 +9,6 @@ function timeAgo(dateStr) {
   if (diff < 86400) return `${Math.floor(diff / 3600)} hr${Math.floor(diff / 3600) > 1 ? 's' : ''} ago`
   if (diff < 604800) return `${Math.floor(diff / 86400)} day${Math.floor(diff / 86400) > 1 ? 's' : ''} ago`
   return new Date(dateStr).toLocaleDateString()
-}
-
-function formatTime(dateStr) {
-  if (!dateStr) return ''
-  return new Date(dateStr).toLocaleString('en-US', {
-    weekday: 'short', month: 'short', day: 'numeric',
-    hour: 'numeric', minute: '2-digit'
-  })
 }
 
 function getInitials(name) {
@@ -32,20 +25,42 @@ function getAvatarColor(str) {
   return colors[Math.abs(hash) % colors.length]
 }
 
-export default function PostCard({ post, index, onAccept }) {
+export default function PostCard({ post, index, onAccept, onShare, currentUser, onModeratorDelete, onModeratorClose }) {
   const colors = subjectColors[post.subject] || { bg: '#f0f0f0', text: '#555' }
   const isAccepted = post.status === 'accepted'
+  const isModerator = currentUser?.is_moderator || false
 
   // Support both real Supabase data and mock data shapes
   const authorName = post.host_name || post.author || 'Unknown'
   const avatarInitials = post.avatar || getInitials(authorName)
   const avatarColor = post.host_avatar_color || post.avatarColor || getAvatarColor(authorName)
+  const profilePictureUrl = post.profile_picture_url || null
   const postedAgo = post.postedAgo || timeAgo(post.created_at)
   const courseTitle = post.course || post.topic
   const notes = post.notes || post.topic
-  const displayTime = post.time
-    ? (post.time.includes('T') ? formatTime(post.time) : post.time)
-    : ''
+  // Use formatSessionTime utility to convert UTC to local timezone
+  const displayTime = post.time ? formatSessionTime(post.time) : ''
+
+  const handleShare = (e) => {
+    e.stopPropagation()
+    if (onShare) {
+      onShare(post)
+    }
+  }
+
+  const handleModeratorDelete = (e) => {
+    e.stopPropagation()
+    if (onModeratorDelete && window.confirm('Are you sure you want to delete this session as a moderator?')) {
+      onModeratorDelete(post)
+    }
+  }
+
+  const handleModeratorClose = (e) => {
+    e.stopPropagation()
+    if (onModeratorClose && window.confirm('Are you sure you want to close this session as a moderator?')) {
+      onModeratorClose(post)
+    }
+  }
 
   return (
     <article
@@ -54,9 +69,24 @@ export default function PostCard({ post, index, onAccept }) {
     >
       <div className={styles.header}>
         <div className={styles.authorRow}>
+          {profilePictureUrl ? (
+            <img 
+              src={profilePictureUrl} 
+              alt={authorName}
+              className={styles.avatar}
+              onError={(e) => {
+                // Fallback to initials on error
+                e.target.style.display = 'none'
+                e.target.nextSibling.style.display = 'flex'
+              }}
+            />
+          ) : null}
           <div
             className={styles.avatar}
-            style={{ background: avatarColor }}
+            style={{ 
+              background: avatarColor,
+              display: profilePictureUrl ? 'none' : 'flex'
+            }}
           >
             {avatarInitials}
           </div>
@@ -65,12 +95,37 @@ export default function PostCard({ post, index, onAccept }) {
             <span className={styles.postedAgo}>{postedAgo}</span>
           </div>
         </div>
-        <span
-          className={styles.subject}
-          style={{ background: colors.bg, color: colors.text }}
-        >
-          {post.subject}
-        </span>
+        <div className={styles.headerActions}>
+          <span
+            className={styles.subject}
+            style={{ background: colors.bg, color: colors.text }}
+          >
+            {post.subject}
+          </span>
+          <button
+            className={styles.shareBtn}
+            onClick={handleShare}
+            aria-label="Share session"
+            title="Share session"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="18" cy="5" r="3" />
+              <circle cx="6" cy="12" r="3" />
+              <circle cx="18" cy="19" r="3" />
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+            </svg>
+          </button>
+        </div>
       </div>
 
       <h3 className={styles.topic}>{courseTitle}</h3>
@@ -107,6 +162,25 @@ export default function PostCard({ post, index, onAccept }) {
           >
             Join Session
           </button>
+        )}
+        
+        {isModerator && (
+          <div className={styles.moderatorActions}>
+            <button
+              className={styles.moderatorBtn}
+              onClick={handleModeratorClose}
+              title="Close session (Moderator)"
+            >
+              Close
+            </button>
+            <button
+              className={`${styles.moderatorBtn} ${styles.moderatorDeleteBtn}`}
+              onClick={handleModeratorDelete}
+              title="Delete session (Moderator)"
+            >
+              Delete
+            </button>
+          </div>
         )}
       </div>
     </article>
