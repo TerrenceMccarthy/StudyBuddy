@@ -8,7 +8,7 @@
 }
 
 .card {
-  background: white;
+  background: var(--surface);
   border-radius: var(--radius);
   box-shadow: var(--shadow-lg);
   max-width: 700px;
@@ -93,23 +93,23 @@
 }
 
 .status.open {
-  background: #e8f5e9;
-  color: #2e7d32;
+  background: var(--teal-pale);
+  color: var(--teal);
 }
 
 .status.matched {
-  background: #e3f2fd;
-  color: #1565c0;
+  background: var(--teal-pale);
+  color: var(--teal-light);
 }
 
 .status.closed {
-  background: #f5f5f5;
-  color: #757575;
+  background: var(--cream-dark);
+  color: var(--ink-light);
 }
 
 .status.expired {
-  background: #fff3e0;
-  color: #e65100;
+  background: var(--amber-pale);
+  color: var(--amber);
 }
 
 .details {
@@ -194,8 +194,8 @@
 }
 
 .expiredNotice {
-  background: #fff3e0;
-  color: #e65100;
+  background: var(--amber-pale);
+  color: var(--amber);
 }
 
 .ownerNotice {

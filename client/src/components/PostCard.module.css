@@ -1,5 +1,5 @@
 .card {
-  background: #fff;
+  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 22px 24px;
@@ -236,14 +236,14 @@
 }
 
 .moderatorDeleteBtn {
-  background: #fee;
-  color: #c33;
-  border-color: #fcc;
+  background: var(--red-pale);
+  color: var(--red);
+  border-color: rgba(192,57,43,0.3);
 }
 
 .moderatorDeleteBtn:hover {
-  background: #c33;
+  background: var(--red);
   color: white;
-  border-color: #c33;
+  border-color: var(--red);
   box-shadow: 0 2px 8px rgba(204,51,51,0.2);
 }

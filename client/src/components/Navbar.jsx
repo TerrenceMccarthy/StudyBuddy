@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useUser } from '../context/UserContext'
+import DarkModeToggle from './DarkModeToggle'
 import styles from './Navbar.module.css'
 
 function getInitials(name) {
@@ -37,6 +38,9 @@ export default function Navbar({ onCreatePost }) {
         </div>
 
         <div className={styles.actions}>
+          {/* Dark mode toggle */}
+          <DarkModeToggle />
+
           {/* Desktop post button */}
           <button className={styles.postBtn} onClick={onCreatePost}>
             <span className={styles.plus}>+</span> Post a Session
@@ -88,6 +92,10 @@ export default function Navbar({ onCreatePost }) {
           <button className={styles.mobilePostBtn} onClick={() => { onCreatePost(); setMobileOpen(false) }}>
             + Post a Session
           </button>
+          <div className={styles.mobileDarkToggle}>
+            <span className={styles.mobileDarkLabel}>Dark mode</span>
+            <DarkModeToggle />
+          </div>
         </div>
       )}
     </nav>

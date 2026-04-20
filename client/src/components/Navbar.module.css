@@ -2,10 +2,11 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(247, 243, 237, 0.85);
+  background: var(--nav-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
+  transition: background 0.25s ease, border-color 0.25s ease;
 }
 
 .inner {
@@ -141,13 +142,14 @@
   position: absolute;
   right: 0;
   top: calc(100% + 8px);
-  background: #fff;
-  border: 1px solid #e0d8cc;
+  background: var(--dropdown-bg);
+  border: 1px solid var(--dropdown-border);
   border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  box-shadow: var(--shadow-md);
   min-width: 150px;
   z-index: 100;
   overflow: hidden;
+  transition: background 0.25s ease, border-color 0.25s ease;
 }
 
 .dropdownItem {
@@ -159,19 +161,19 @@
   border: none;
   font-family: system-ui, sans-serif;
   font-size: 0.85rem;
-  color: #333;
+  color: var(--dropdown-item-color);
   cursor: pointer;
   text-decoration: none;
   transition: background 0.1s;
 }
 
 .dropdownItem:hover {
-  background: #f5f0e8;
+  background: var(--dropdown-hover-bg);
 }
 
 .dropdownLogout {
-  color: #c0392b;
-  border-top: 1px solid #f0ebe2;
+  color: var(--red);
+  border-top: 1px solid var(--border);
 }
 
 /* ── Hamburger button (hidden on desktop) ─────────────── */
@@ -211,9 +213,10 @@
   flex-direction: column;
   padding: 0.75rem 1rem 1rem;
   border-top: 1px solid var(--border);
-  background: rgba(247, 243, 237, 0.97);
+  background: var(--mobile-menu-bg);
   backdrop-filter: blur(12px);
   gap: 0.25rem;
+  transition: background 0.25s ease;
 }
 
 .mobileLink {
@@ -247,14 +250,37 @@
 
 .mobilePostBtn:hover { background: var(--amber); }
 
+.
+
+{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 1rem;
+  margin-top: 0.25rem;
+  border-top: 1px solid var(--border);
+}
+
+.mobileDarkLabel {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--ink-light);
+}
+
 /* ── Responsive breakpoint ────────────────────────────── */
 @media (max-width: 640px) {
   .links   { display: none; }
   .postBtn { display: none; }
+  /* hide desktop toggle, show in mobile menu */
+  .actions > :global(.toggle) { display: none; }
   .hamburger { display: flex; }
 
   .inner { gap: 0; }
   .actions { gap: 8px; margin-left: auto; }
+}
+
+@media (min-width: 641px) {
+  .mobileDarkToggle { display: none; }
 }
 
 .avatarImg {

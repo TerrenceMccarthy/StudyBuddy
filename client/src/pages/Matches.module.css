@@ -2,7 +2,7 @@
 
 .main {
   min-height: 100vh;
-  background: #f5f0e8;
+  background: var(--cream);
   font-family: 'Georgia', serif;
 }
 
@@ -20,7 +20,7 @@
 .heroEyebrow {
   font-family: system-ui, sans-serif;
   font-size: 0.85rem;
-  color: #888;
+  color: var(--ink-light);
   margin: 0 0 0.5rem;
   letter-spacing: 0.02em;
 }
@@ -30,19 +30,19 @@
   font-size: 3rem;
   font-weight: 700;
   line-height: 1.1;
-  color: #1a1a1a;
+  color: var(--ink);
   margin: 0 0 0.75rem;
 }
 
 .heroTitle em {
   font-style: italic;
-  color: #c07d1e;
+  color: var(--amber);
 }
 
 .heroSub {
   font-family: system-ui, sans-serif;
   font-size: 1rem;
-  color: #555;
+  color: var(--ink-light);
   margin: 0;
   line-height: 1.5;
 }
@@ -58,7 +58,7 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: #c07d1e;
+  background: var(--amber);
   opacity: 0.35;
   animation: pulse 3s ease-in-out infinite;
 }
@@ -77,8 +77,8 @@
 }
 
 .statCard {
-  background: #fff;
-  border: 1px solid #e8e0d2;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 1rem 1.5rem;
   display: flex;
@@ -92,14 +92,14 @@
   font-family: 'Georgia', serif;
   font-size: 1.8rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--ink);
   line-height: 1;
 }
 
 .statLabel {
   font-family: system-ui, sans-serif;
   font-size: 0.78rem;
-  color: #888;
+  color: var(--ink-light);
   letter-spacing: 0.02em;
 }
 
@@ -121,25 +121,25 @@
 .filterBtn {
   padding: 0.45rem 1rem;
   border-radius: 999px;
-  border: 1.5px solid #d5cfc4;
-  background: #fff;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
   font-family: system-ui, sans-serif;
   font-size: 0.85rem;
-  color: #444;
+  color: var(--ink-light);
   cursor: pointer;
   transition: all 0.15s;
   white-space: nowrap;
 }
 
 .filterBtn:hover {
-  border-color: #2d7a6b;
-  color: #2d7a6b;
+  border-color: var(--teal);
+  color: var(--teal);
 }
 
 .filterActive {
-  background: #1a1a1a;
-  color: #fff;
-  border-color: #1a1a1a;
+  background: var(--ink);
+  color: white;
+  border-color: var(--ink);
 }
 
 /* ── Content ──────────────────────────────────────────── */
@@ -157,15 +157,15 @@
 .feedCount {
   font-family: system-ui, sans-serif;
   font-size: 0.85rem;
-  color: #888;
+  color: var(--ink-light);
 }
 
 .sortSelect {
   font-family: system-ui, sans-serif;
   font-size: 0.85rem;
-  color: #444;
-  border: 1.5px solid #d5cfc4;
-  background: #fff;
+  color: var(--ink-light);
+  border: 1.5px solid var(--border);
+  background: var(--surface);
   border-radius: 8px;
   padding: 0.35rem 0.65rem;
   cursor: pointer;
@@ -180,8 +180,8 @@
 
 /* ── Card ─────────────────────────────────────────────── */
 .card {
-  background: #fff;
-  border: 1px solid #e8e0d2;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 16px;
   padding: 1.25rem;
   display: flex;
@@ -222,7 +222,7 @@
   font-family: system-ui, sans-serif;
   font-size: 0.7rem;
   font-weight: 700;
-  color: #fff;
+  color: white;
   flex-shrink: 0;
   object-fit: cover;
 }
@@ -236,13 +236,13 @@
   font-family: system-ui, sans-serif;
   font-size: 0.85rem;
   font-weight: 600;
-  color: #1a1a1a;
+  color: var(--ink);
 }
 
 .postedAgo {
   font-family: system-ui, sans-serif;
   font-size: 0.75rem;
-  color: #999;
+  color: var(--ink-light);
 }
 
 .headerRight {
@@ -270,7 +270,7 @@
   border: none;
   cursor: pointer;
   font-size: 1.1rem;
-  color: #aaa;
+  color: var(--ink-light);
   padding: 0.1rem 0.3rem;
   border-radius: 6px;
   line-height: 1;
@@ -279,16 +279,16 @@
 }
 
 .menuBtn:hover {
-  background: #f0ebe2;
-  color: #555;
+  background: var(--cream-dark);
+  color: var(--ink-light);
 }
 
 .menu {
   position: absolute;
   right: 0;
   top: calc(100% + 4px);
-  background: #fff;
-  border: 1px solid #e0d8cc;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 10px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.1);
   min-width: 155px;
@@ -305,21 +305,21 @@
   border: none;
   font-family: system-ui, sans-serif;
   font-size: 0.85rem;
-  color: #333;
+  color: var(--ink);
   cursor: pointer;
   transition: background 0.1s;
 }
 
 .menu button:hover {
-  background: #f5f0e8;
+  background: var(--cream);
 }
 
 .menuLeave {
-  color: #c0392b !important;
+  color: var(--red) !important;
 }
 
 .menuLeave:hover {
-  background: #fdecea !important;
+  background: var(--red-pale);
 }
 
 /* ── Card Body ────────────────────────────────────────── */
@@ -327,13 +327,13 @@
   font-family: 'Georgia', serif;
   font-size: 1.05rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--ink);
   margin: 0;
   line-height: 1.3;
 }
 
 .topicBox {
-  background: #f9f5ef;
+  background: var(--cream);
   border-radius: 8px;
   padding: 0.7rem 0.9rem;
 }
@@ -341,7 +341,7 @@
 .topicText {
   font-family: system-ui, sans-serif;
   font-size: 0.85rem;
-  color: #555;
+  color: var(--ink-light);
   margin: 0;
   line-height: 1.5;
 }
@@ -352,7 +352,7 @@
   gap: 0.3rem;
   font-family: system-ui, sans-serif;
   font-size: 0.82rem;
-  color: #666;
+  color: var(--ink-light);
 }
 
 .meta span {
@@ -368,7 +368,7 @@
   justify-content: space-between;
   margin-top: auto;
   padding-top: 0.5rem;
-  border-top: 1px solid #f0ebe2;
+  border-top: 1px solid var(--border);
 }
 
 .statusBadge {
@@ -398,13 +398,13 @@
 .participants {
   font-family: system-ui, sans-serif;
   font-size: 0.78rem;
-  color: #999;
+  color: var(--ink-light);
 }
 
 .msgBtn {
   position: relative;
-  background: #f0f7f5;
-  border: 1px solid #c8e6de;
+  background: var(--teal-pale);
+  border: 1px solid var(--teal-pale);
   border-radius: 8px;
   width: 32px;
   height: 32px;
@@ -417,15 +417,15 @@
 }
 
 .msgBtn:hover {
-  background: #ddf0e9;
+  background: var(--teal-pale);
 }
 
 .msgBadge {
   position: absolute;
   top: -5px;
   right: -5px;
-  background: #c07d1e;
-  color: #fff;
+  background: var(--amber);
+  color: white;
   font-family: system-ui, sans-serif;
   font-size: 0.62rem;
   font-weight: 700;
@@ -456,14 +456,14 @@
   font-family: 'Georgia', serif;
   font-size: 1.2rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--ink);
   margin: 0;
 }
 
 .emptySub {
   font-family: system-ui, sans-serif;
   font-size: 0.9rem;
-  color: #888;
+  color: var(--ink-light);
   margin: 0;
 }
 
@@ -480,7 +480,7 @@
 }
 
 .modal {
-  background: #fff;
+  background: var(--surface);
   border-radius: 18px;
   width: 100%;
   max-width: 460px;
@@ -496,7 +496,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 1.1rem 1.4rem;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border);
 }
 
 .modalTitleRow {
@@ -509,14 +509,14 @@
   font-family: system-ui, sans-serif;
   font-size: 0.92rem;
   font-weight: 600;
-  color: #1a1a1a;
+  color: var(--ink);
   margin: 0;
 }
 
 .modalSub {
   font-family: system-ui, sans-serif;
   font-size: 0.75rem;
-  color: #999;
+  color: var(--ink-light);
   margin: 0;
   white-space: nowrap;
   overflow: hidden;
@@ -528,7 +528,7 @@
   background: none;
   border: none;
   font-size: 1rem;
-  color: #aaa;
+  color: var(--ink-light);
   cursor: pointer;
   padding: 0.3rem;
   border-radius: 6px;
@@ -536,8 +536,8 @@
 }
 
 .modalClose:hover {
-  background: #f5f0e8;
-  color: #555;
+  background: var(--cream);
+  color: var(--ink-light);
 }
 
 /* ── Chat ─────────────────────────────────────────────── */
@@ -578,21 +578,21 @@
 }
 
 .bubbleMe .bubbleText {
-  background: #2d7a6b;
-  color: #fff;
+  background: var(--teal);
+  color: white;
   border-bottom-right-radius: 4px;
 }
 
 .bubbleThem .bubbleText {
-  background: #f0ebe2;
-  color: #1a1a1a;
+  background: var(--cream-dark);
+  color: var(--ink);
   border-bottom-left-radius: 4px;
 }
 
 .bubbleTime {
   font-family: system-ui, sans-serif;
   font-size: 0.68rem;
-  color: #bbb;
+  color: var(--ink-light);
   padding: 0 0.2rem;
 }
 
@@ -600,32 +600,32 @@
   display: flex;
   gap: 0.6rem;
   padding: 0.9rem 1.4rem;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--border);
 }
 
 .chatField {
   flex: 1;
   padding: 0.55rem 0.85rem;
-  border: 1.5px solid #d5cfc4;
+  border: 1.5px solid var(--border);
   border-radius: 999px;
   font-family: system-ui, sans-serif;
   font-size: 0.88rem;
-  color: #1a1a1a;
-  background: #fafaf8;
+  color: var(--ink);
+  background: var(--surface-alt);
   transition: border-color 0.15s;
 }
 
 .chatField:focus {
   outline: none;
-  border-color: #2d7a6b;
-  background: #fff;
+  border-color: var(--teal);
+  background: var(--surface);
 }
 
 .sendBtn {
   padding: 0.5rem 1.1rem;
   border-radius: 999px;
-  background: #2d7a6b;
-  color: #fff;
+  background: var(--teal);
+  color: white;
   border: none;
   font-family: system-ui, sans-serif;
   font-size: 0.85rem;
@@ -636,7 +636,7 @@
 }
 
 .sendBtn:hover {
-  background: #235f54;
+  background: var(--teal-light);
 }
 
 /* ── Responsive ───────────────────────────────────────── */
@@ -662,7 +662,7 @@
 .expiredNote {
   font-family: system-ui, sans-serif;
   font-size: 0.75rem;
-  color: #b45309;
+  color: var(--amber);
   font-style: italic;
 }
 
@@ -675,13 +675,13 @@
 
 .loadingText {
   font-size: 0.95rem;
-  color: #aaa;
+  color: var(--ink-light);
 }
 
 .formError {
   font-size: 0.83rem;
-  color: #c0392b;
-  background: #fdecea;
+  color: var(--red);
+  background: var(--red-pale);
   border-radius: 8px;
   padding: 0.55rem 0.85rem;
   margin: 0;
@@ -690,14 +690,14 @@
   font-family: system-ui, sans-serif;
   font-size: 0.7rem;
   font-weight: 600;
-  color: #999;
+  color: var(--ink-light);
   padding: 0 0.2rem;
 }
 
 .chatEmpty {
   font-family: system-ui, sans-serif;
   font-size: 0.88rem;
-  color: #bbb;
+  color: var(--ink-light);
   text-align: center;
   margin: auto;
 }

@@ -2,7 +2,7 @@
 
 .main {
   min-height: 100vh;
-  background: #f5f0e8;
+  background: var(--cream);
   font-family: system-ui, sans-serif;
 }
 
@@ -15,7 +15,7 @@
 
 .loadingText {
   font-size: 0.95rem;
-  color: #aaa;
+  color: var(--ink-light);
 }
 
 /* ── Hero ─────────────────────────────────────────────── */
@@ -36,7 +36,7 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: #c07d1e;
+  background: var(--amber);
   opacity: 0.35;
   animation: pulse 3s ease-in-out infinite;
 }
@@ -62,14 +62,14 @@
   width: 88px;
   height: 88px;
   border-radius: 50%;
-  background: #2d7a6b;
-  color: #fff;
+  background: var(--teal);
+  color: white;
   font-size: 1.6rem;
   font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 3px solid #fff;
+  border: 3px solid var(--surface);
   box-shadow: 0 2px 12px rgba(0,0,0,0.1);
   object-fit: cover;
 }
@@ -81,8 +81,8 @@
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: #4caf50;
-  border: 2px solid #f5f0e8;
+  background: var(--sage);
+  border: 2px solid var(--cream);
 }
 
 .profileMeta {
@@ -102,24 +102,24 @@
   font-family: 'Georgia', serif;
   font-size: 1.8rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--ink);
   margin: 0;
   line-height: 1.2;
 }
 
 .profileHandle {
   font-size: 0.82rem;
-  color: #aaa;
+  color: var(--ink-light);
   margin: 0.1rem 0 0;
 }
 
 .editBtn {
   padding: 0.42rem 1rem;
   border-radius: 999px;
-  border: 1.5px solid #d5cfc4;
-  background: #fff;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
   font-size: 0.82rem;
-  color: #555;
+  color: var(--ink-light);
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.15s;
@@ -127,19 +127,19 @@
 }
 
 .editBtn:hover {
-  border-color: #2d7a6b;
-  color: #2d7a6b;
+  border-color: var(--teal);
+  color: var(--teal);
 }
 
 .profileUniversity {
   font-size: 0.88rem;
-  color: #666;
+  color: var(--ink-light);
   margin: 0 0 0.75rem;
 }
 
 .profileBio {
   font-size: 0.93rem;
-  color: #444;
+  color: var(--ink-light);
   line-height: 1.55;
   margin: 0 0 1rem;
   max-width: 560px;
@@ -163,17 +163,17 @@
   font-weight: 600;
   padding: 0.25rem 0.7rem;
   border-radius: 999px;
-  background: #f0ebe2;
-  color: #777;
+  background: var(--cream-dark);
+  color: var(--ink-light);
 }
 
 /* ── Stats Bar ────────────────────────────────────────── */
 .statsBar {
   display: flex;
   align-items: center;
-  background: #fff;
-  border-top: 1px solid #e8e0d2;
-  border-bottom: 1px solid #e8e0d2;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
   padding: 1.1rem 2.5rem;
 }
 
@@ -189,20 +189,20 @@
   font-family: 'Georgia', serif;
   font-size: 1.5rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--ink);
   line-height: 1;
 }
 
 .statLabel {
   font-size: 0.75rem;
-  color: #999;
+  color: var(--ink-light);
   letter-spacing: 0.02em;
 }
 
 .statDivider {
   width: 1px;
   height: 36px;
-  background: #e8e0d2;
+  background: var(--cream-dark);
 }
 
 /* ── Availability ─────────────────────────────────────── */
@@ -211,15 +211,15 @@
   align-items: center;
   gap: 0.85rem;
   padding: 1rem 2.5rem;
-  background: #faf6ee;
-  border-bottom: 1px solid #e8e0d2;
+  background: var(--cream);
+  border-bottom: 1px solid var(--border);
   flex-wrap: wrap;
 }
 
 .availLabel {
   font-size: 0.8rem;
   font-weight: 600;
-  color: #888;
+  color: var(--ink-light);
   letter-spacing: 0.04em;
   text-transform: uppercase;
   white-space: nowrap;
@@ -235,23 +235,23 @@
   font-size: 0.75rem;
   padding: 0.22rem 0.65rem;
   border-radius: 999px;
-  border: 1.5px solid #d5cfc4;
-  background: #fff;
-  color: #bbb;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--ink-light);
   font-weight: 500;
 }
 
 .dayActive {
-  background: #2d7a6b;
-  border-color: #2d7a6b;
-  color: #fff;
+  background: var(--teal);
+  border-color: var(--teal);
+  color: white;
 }
 
 /* ── Tabs ─────────────────────────────────────────────── */
 .tabs {
   display: flex;
   padding: 1.25rem 2.5rem 0;
-  border-bottom: 1px solid #e8e0d2;
+  border-bottom: 1px solid var(--border);
 }
 
 .tab {
@@ -259,19 +259,19 @@
   background: none;
   border: none;
   font-size: 0.88rem;
-  color: #999;
+  color: var(--ink-light);
   cursor: pointer;
   border-bottom: 2px solid transparent;
   margin-bottom: -1px;
   transition: all 0.15s;
 }
 
-.tab:hover { color: #555; }
+.tab:hover { color: var(--ink-light); }
 
 .tabActive {
-  color: #1a1a1a;
+  color: var(--ink);
   font-weight: 600;
-  border-bottom-color: #1a1a1a;
+  border-bottom-color: var(--ink);
 }
 
 /* ── Tab Content ──────────────────────────────────────── */
@@ -291,8 +291,8 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  background: #fff;
-  border: 1px solid #e8e0d2;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 0.9rem 1.1rem;
   transition: box-shadow 0.15s;
@@ -321,7 +321,7 @@
 .activityCourse {
   font-size: 0.9rem;
   font-weight: 600;
-  color: #1a1a1a;
+  color: var(--ink);
   margin: 0 0 0.15rem;
   white-space: nowrap;
   overflow: hidden;
@@ -330,7 +330,7 @@
 
 .activityMeta {
   font-size: 0.78rem;
-  color: #999;
+  color: var(--ink-light);
   margin: 0;
   display: flex;
   align-items: center;
@@ -338,11 +338,11 @@
 }
 
 .expiredLabel {
-  color: #f59e0b;
+  color: var(--amber-light);
   font-weight: 600;
 }
 
-.dot { color: #ccc; }
+.dot { color: var(--ink-light); }
 
 .activityBadge {
   font-size: 0.7rem;
@@ -359,15 +359,15 @@
   font-size: 1rem;
   padding: 0.4rem 0.6rem;
   cursor: pointer;
-  color: #888;
+  color: var(--ink-light);
   border-radius: 6px;
   transition: all 0.15s;
   flex-shrink: 0;
 }
 
 .editSessionBtn:hover {
-  background: #f5f0e8;
-  color: #2d7a6b;
+  background: var(--cream);
+  color: var(--teal);
 }
 
 /* ── Menu (three-dot) ─────────────────────────────────── */
@@ -382,23 +382,23 @@
   font-size: 1.2rem;
   padding: 0.4rem 0.6rem;
   cursor: pointer;
-  color: #888;
+  color: var(--ink-light);
   border-radius: 6px;
   transition: all 0.15s;
   line-height: 1;
 }
 
 .menuBtn:hover {
-  background: #f5f0e8;
-  color: #2d7a6b;
+  background: var(--cream);
+  color: var(--teal);
 }
 
 .menu {
   position: absolute;
   top: 100%;
   right: 0;
-  background: #fff;
-  border: 1px solid #e8e0d2;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 10px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.1);
   min-width: 140px;
@@ -415,22 +415,22 @@
   border: none;
   text-align: left;
   font-size: 0.85rem;
-  color: #444;
+  color: var(--ink-light);
   cursor: pointer;
   transition: background 0.15s;
   font-family: system-ui, sans-serif;
 }
 
 .menu button:hover {
-  background: #f5f0e8;
+  background: var(--cream);
 }
 
 .menuDelete {
-  color: #d32f2f !important;
+  color: var(--red) !important;
 }
 
 .menuDelete:hover {
-  background: #ffebee !important;
+  background: var(--red-pale) !important;
 }
 
 /* ── Empty ────────────────────────────────────────────── */
@@ -444,8 +444,8 @@
 }
 
 .emptyIcon { font-size: 2rem; margin-bottom: 0.25rem; }
-.emptyTitle { font-family: 'Georgia', serif; font-size: 1.1rem; font-weight: 700; color: #1a1a1a; margin: 0; }
-.emptySub { font-size: 0.88rem; color: #888; margin: 0; }
+.emptyTitle { font-family: 'Georgia', serif; font-size: 1.1rem; font-weight: 700; color: var(--ink); margin: 0; }
+.emptySub { font-size: 0.88rem; color: var(--ink-light); margin: 0; }
 
 /* ── Edit Modal ───────────────────────────────────────── */
 .modalBackdrop {
@@ -460,7 +460,7 @@
 }
 
 .modal {
-  background: #fff;
+  background: var(--surface);
   border-radius: 18px;
   width: 100%;
   max-width: 520px;
@@ -476,14 +476,14 @@
   align-items: center;
   justify-content: space-between;
   padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border);
 }
 
 .modalTitle {
   font-family: 'Georgia', serif;
   font-size: 1.15rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--ink);
   margin: 0;
 }
 
@@ -491,14 +491,14 @@
   background: none;
   border: none;
   font-size: 1rem;
-  color: #aaa;
+  color: var(--ink-light);
   cursor: pointer;
   padding: 0.3rem;
   border-radius: 6px;
   transition: background 0.15s;
 }
 
-.modalClose:hover { background: #f5f0e8; }
+.modalClose:hover { background: var(--cream); }
 
 .modalBody {
   padding: 1.5rem;
@@ -512,7 +512,7 @@
   display: block;
   font-size: 0.78rem;
   font-weight: 600;
-  color: #888;
+  color: var(--ink-light);
   margin-bottom: 0.3rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -521,11 +521,11 @@
 .fieldInput {
   width: 100%;
   padding: 0.6rem 0.85rem;
-  border: 1.5px solid #d5cfc4;
+  border: 1.5px solid var(--border);
   border-radius: 10px;
   font-size: 0.9rem;
-  color: #1a1a1a;
-  background: #fafaf8;
+  color: var(--ink);
+  background: var(--surface-alt);
   box-sizing: border-box;
   transition: border-color 0.15s;
   font-family: system-ui, sans-serif;
@@ -533,8 +533,8 @@
 
 .fieldInput:focus {
   outline: none;
-  border-color: #2d7a6b;
-  background: #fff;
+  border-color: var(--teal);
+  background: var(--surface);
 }
 
 .fieldTextarea {
@@ -558,24 +558,24 @@
 .chipBtn {
   padding: 0.35rem 0.85rem;
   border-radius: 999px;
-  border: 1.5px solid #d5cfc4;
-  background: #fff;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
   font-family: system-ui, sans-serif;
   font-size: 0.8rem;
-  color: #555;
+  color: var(--ink-light);
   cursor: pointer;
   transition: all 0.15s;
 }
 
 .chipBtn:hover {
-  border-color: #2d7a6b;
-  color: #2d7a6b;
+  border-color: var(--teal);
+  color: var(--teal);
 }
 
 .chipActive {
-  background: #1a1a1a;
-  color: #fff;
-  border-color: #1a1a1a;
+  background: var(--ink);
+  color: white;
+  border-color: var(--ink);
 }
 
 .modalFooter {
@@ -583,28 +583,28 @@
   justify-content: flex-end;
   gap: 0.75rem;
   padding: 1rem 1.5rem;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--border);
 }
 
 .cancelBtn {
   padding: 0.55rem 1.25rem;
   border-radius: 999px;
-  border: 1.5px solid #d5cfc4;
-  background: #fff;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
   font-size: 0.88rem;
-  color: #555;
+  color: var(--ink-light);
   cursor: pointer;
   font-family: system-ui, sans-serif;
   transition: all 0.15s;
 }
 
-.cancelBtn:hover { border-color: #aaa; }
+.cancelBtn:hover { border-color: var(--ink-light); }
 
 .saveBtn {
   padding: 0.55rem 1.5rem;
   border-radius: 999px;
-  background: #2d7a6b;
-  color: #fff;
+  background: var(--teal);
+  color: white;
   border: none;
   font-size: 0.88rem;
   font-weight: 600;
@@ -613,7 +613,7 @@
   transition: background 0.15s;
 }
 
-.saveBtn:hover { background: #235f54; }
+.saveBtn:hover { background: var(--teal-light); }
 .saveBtn:disabled { opacity: 0.65; cursor: not-allowed; }
 
 /* ── Responsive ───────────────────────────────────────── */
@@ -675,7 +675,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: white;
   font-weight: 700;
   font-size: 0.85rem;
   transition: background 0.2s;
@@ -683,17 +683,17 @@
 
 .colorPreviewLabel {
   font-size: 0.8rem;
-  color: #888;
+  color: var(--ink-light);
 }
 
 .formError {
   font-size: 0.85rem;
-  color: #d32f2f;
+  color: var(--red);
   margin: 0.5rem 0 0;
   padding: 0.5rem 0.75rem;
-  background: #ffebee;
+  background: var(--red-pale);
   border-radius: 8px;
-  border-left: 3px solid #d32f2f;
+  border-left: 3px solid var(--red);
 }
 
 /* ── Profile Picture Upload ─────────────────────────── */
@@ -702,9 +702,9 @@
   gap: 1.25rem;
   align-items: center;
   padding: 1rem;
-  background: #fafaf8;
+  background: var(--surface-alt);
   border-radius: 12px;
-  border: 1.5px solid #e8e0d2;
+  border: 1.5px solid var(--border);
 }
 
 .picturePreviewWrap {
@@ -719,7 +719,7 @@
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid #fff;
+  border: 3px solid var(--surface);
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
@@ -730,10 +730,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: white;
   font-weight: 700;
   font-size: 1.4rem;
-  border: 3px solid #fff;
+  border: 3px solid var(--surface);
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
@@ -752,9 +752,9 @@
   display: inline-block;
   padding: 0.5rem 1.25rem;
   border-radius: 999px;
-  border: 1.5px solid #2d7a6b;
-  background: #fff;
-  color: #2d7a6b;
+  border: 1.5px solid var(--teal);
+  background: var(--surface);
+  color: var(--teal);
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
@@ -764,22 +764,22 @@
 }
 
 .pictureUploadBtn:hover {
-  background: #2d7a6b;
-  color: #fff;
+  background: var(--teal);
+  color: white;
 }
 
 .pictureHint {
   font-size: 0.75rem;
-  color: #999;
+  color: var(--ink-light);
   margin: 0;
 }
 
 .pictureError {
   font-size: 0.8rem;
-  color: #d32f2f;
+  color: var(--red);
   margin: 0;
   padding: 0.4rem 0.6rem;
-  background: #ffebee;
+  background: var(--red-pale);
   border-radius: 6px;
-  border-left: 2px solid #d32f2f;
+  border-left: 2px solid var(--red);
 }
