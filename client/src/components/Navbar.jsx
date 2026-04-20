@@ -17,7 +17,7 @@ export default function Navbar({ onCreatePost }) {
   // Close mobile menu on navigation
   useEffect(() => { setMobileOpen(false) }, [location.pathname])
 
-  const fullName = user?.user_metadata?.full_name || user?.email || ''
+  const fullName = profile?.full_name || user?.user_metadata?.full_name || user?.email || ''
   const initials = getInitials(fullName)
   const isActive = (path) => location.pathname === path
 
@@ -45,7 +45,11 @@ export default function Navbar({ onCreatePost }) {
           {/* Avatar + dropdown */}
           <div className={styles.avatarWrap}>
             <button className={styles.avatarBtn} onClick={() => setMenuOpen(o => !o)}>
-              <div className={styles.avatar} style={{ background: profile?.avatar_color || undefined }}>{initials}</div>
+              {profile?.profile_picture_url ? (
+                <img src={profile.profile_picture_url} alt={fullName} className={styles.avatarImg} />
+              ) : (
+                <div className={styles.avatar} style={{ background: profile?.avatar_color || undefined }}>{initials}</div>
+              )}
             </button>
             {menuOpen && (
               <div className={styles.dropdown}>

@@ -256,3 +256,16 @@
   .inner { gap: 0; }
   .actions { gap: 8px; margin-left: auto; }
 }
+
+.avatarImg {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform var(--transition);
+}
+
+.avatarImg:hover {
+  transform: scale(1.08);
+}
