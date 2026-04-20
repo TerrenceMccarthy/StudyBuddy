@@ -12,7 +12,7 @@
 }
 
 .modal {
-  background: #fff;
+  background: var(--surface);
   border-radius: 20px;
   width: 100%;
   max-width: 420px;
@@ -112,8 +112,8 @@
 
 /* ── In-person warning ────────────────────────────────── */
 .warning {
-  background: #fff8e1;
-  border: 1.5px solid #f9a825;
+  background: var(--amber-pale);
+  border: 1.5px solid var(--amber);
   border-radius: 12px;
   padding: 1rem 1.1rem;
   margin-bottom: 16px;
@@ -135,19 +135,19 @@
 .warningTitle {
   font-size: 0.88rem;
   font-weight: 700;
-  color: #e65100;
+  color: var(--amber);
 }
 
 .warningText {
   font-size: 0.8rem;
-  color: #555;
+  color: var(--ink-light);
   margin: 0 0 0.5rem;
   line-height: 1.5;
 }
 
 .warningList {
   font-size: 0.8rem;
-  color: #555;
+  color: var(--ink-light);
   margin: 0;
   padding-left: 1.2rem;
   display: flex;
@@ -157,5 +157,5 @@
 }
 
 .warningList strong {
-  color: #e65100;
+  color: var(--amber);
 }
