@@ -125,11 +125,12 @@ function getInitials(name) {
   return name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
 }
 
-export default function MyPosts({ onShare }) {
+export default function MyPosts({ onShare, onCreatePost }) {
   const { user, profile } = useUser()
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(true)
   const [activeFilter, setActiveFilter] = useState('all')
+  const [sort, setSort] = useState('Most recent')
 
   // Use centralized session actions hook
   const {
@@ -175,9 +176,13 @@ export default function MyPosts({ onShare }) {
   // Apply display status before filtering
   const postsWithStatus = posts.map(p => ({ ...p, _displayStatus: getSessionStatus(p) }))
 
-  const filtered = postsWithStatus.filter(p =>
-    activeFilter === 'all' || p._displayStatus === activeFilter
-  )
+  const filtered = postsWithStatus
+    .filter(p => activeFilter === 'all' || p._displayStatus === activeFilter)
+    .sort((a, b) => {
+      if (sort === 'By status') return (a._displayStatus || '').localeCompare(b._displayStatus || '')
+      if (sort === 'By subject') return (a.subject || '').localeCompare(b.subject || '')
+      return new Date(b.time) - new Date(a.time) // Most recent (default)
+    })
 
   const stats = {
     total: posts.length,
@@ -210,18 +215,7 @@ export default function MyPosts({ onShare }) {
   }
 
   const handleOpenNew = () => {
-    // For creating new posts, we still use local state
-    // This is not part of the centralized edit/delete logic
-    setSessionForm({
-      course: '',
-      subject: 'Computer Science',
-      topic: '',
-      building: '',
-      duration: '',
-      time: ''
-    })
-    // Note: We would need to extend the hook or handle this separately
-    // For now, keeping the existing modal approach for new posts
+    if (onCreatePost) onCreatePost()
   }
 
   const handleSave = async () => {
@@ -294,7 +288,7 @@ export default function MyPosts({ onShare }) {
             {filtered.length} session{filtered.length !== 1 ? 's' : ''}
             {activeFilter !== 'all' ? ` · ${FILTERS.find(f => f.key === activeFilter)?.label}` : ''}
           </span>
-          <select className={styles.sortSelect}>
+          <select className={styles.sortSelect} value={sort} onChange={e => setSort(e.target.value)}>
             <option>Most recent</option>
             <option>By status</option>
             <option>By subject</option>

@@ -12,6 +12,7 @@ export default function Home({ onAccept, onShare, refreshKey }) {
   const [loading, setLoading] = useState(true)
   const [activeFilter, setActiveFilter] = useState("All")
   const [search, setSearch] = useState("")
+  const [sort, setSort] = useState("Soonest first")
 
   const fetchPosts = async () => {
     setLoading(true)
@@ -107,15 +108,21 @@ export default function Home({ onAccept, onShare, refreshKey }) {
     }
   }
 
-  const filtered = posts.filter(p => {
-    const matchFilter = activeFilter === "All" || p.subject === activeFilter
-    const matchSearch = !search ||
-      p.topic.toLowerCase().includes(search.toLowerCase()) ||
-      p.building.toLowerCase().includes(search.toLowerCase()) ||
-      p.subject.toLowerCase().includes(search.toLowerCase()) ||
-      p.course.toLowerCase().includes(search.toLowerCase())
-    return matchFilter && matchSearch
-  })
+  const filtered = posts
+    .filter(p => {
+      const matchFilter = activeFilter === "All" || p.subject === activeFilter
+      const matchSearch = !search ||
+        p.topic.toLowerCase().includes(search.toLowerCase()) ||
+        p.building.toLowerCase().includes(search.toLowerCase()) ||
+        p.subject.toLowerCase().includes(search.toLowerCase()) ||
+        p.course.toLowerCase().includes(search.toLowerCase())
+      return matchFilter && matchSearch
+    })
+    .sort((a, b) => {
+      if (sort === "Most recent") return new Date(b.created_at) - new Date(a.created_at)
+      if (sort === "By subject") return (a.subject || '').localeCompare(b.subject || '')
+      return new Date(a.time) - new Date(b.time) // Soonest first (default)
+    })
 
   const openCount = posts.length
 
@@ -173,7 +180,7 @@ export default function Home({ onAccept, onShare, refreshKey }) {
             {filtered.length} session{filtered.length !== 1 ? 's' : ''}
             {activeFilter !== 'All' ? ` in ${activeFilter}` : ''}
           </span>
-          <select className={styles.sortSelect}>
+          <select className={styles.sortSelect} value={sort} onChange={e => setSort(e.target.value)}>
             <option>Soonest first</option>
             <option>Most recent</option>
             <option>By subject</option>

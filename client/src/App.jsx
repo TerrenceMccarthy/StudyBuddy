@@ -102,7 +102,7 @@ function AppContent() {
         {/* Protected routes */}
         <Route path="/" element={<ProtectedRoute><Navbar onCreatePost={() => { setSpamError(''); setShowCreate(true) }} /><Home onAccept={setAcceptPost} onShare={setShareSession} refreshKey={homeRefreshKey} /></ProtectedRoute>} />
         <Route path="/profile" element={<ProtectedRoute><Navbar onCreatePost={() => { setSpamError(''); setShowCreate(true) }} /><Profile onShare={setShareSession} /></ProtectedRoute>} />
-        <Route path="/posts" element={<ProtectedRoute><Navbar onCreatePost={() => { setSpamError(''); setShowCreate(true) }} /><MyPosts onShare={setShareSession} /></ProtectedRoute>} />
+        <Route path="/posts" element={<ProtectedRoute><Navbar onCreatePost={() => { setSpamError(''); setShowCreate(true) }} /><MyPosts onShare={setShareSession} onCreatePost={() => { setSpamError(''); setShowCreate(true) }} /></ProtectedRoute>} />
         <Route path="/matches" element={<ProtectedRoute><Navbar onCreatePost={() => { setSpamError(''); setShowCreate(true) }} /><Matches /></ProtectedRoute>} />
 
         <Route path="*" element={<Navigate to="/" replace />} />
