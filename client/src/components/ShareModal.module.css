@@ -1,7 +1,7 @@
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -10,7 +10,7 @@
 }
 
 .modal {
-  background: white;
+  background: var(--surface);
   border-radius: var(--radius);
   box-shadow: var(--shadow-lg);
   width: 90%;
@@ -139,7 +139,7 @@
 }
 
 .nativeShareBtn {
-  background: white;
+  background: var(--surface);
   color: var(--teal);
   border: 1px solid var(--teal);
 }
