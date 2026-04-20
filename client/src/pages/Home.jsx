@@ -111,12 +111,39 @@ export default function Home({ onAccept, onShare, refreshKey }) {
   const filtered = posts
     .filter(p => {
       const matchFilter = activeFilter === "All" || p.subject === activeFilter
-      const matchSearch = !search ||
-        p.topic.toLowerCase().includes(search.toLowerCase()) ||
-        p.building.toLowerCase().includes(search.toLowerCase()) ||
-        p.subject.toLowerCase().includes(search.toLowerCase()) ||
-        p.course.toLowerCase().includes(search.toLowerCase())
+
+      const query = search.toLowerCase().trim()
+      const sessionDate = new Date(p.time)
+
+      const searchableText = [
+        p.topic || "",
+        p.building || "",
+        p.subject || "",
+        p.course || "",
+        sessionDate.toLocaleDateString("en-US", {
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+          weekday: "long",
+        }),
+        sessionDate.toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        }),
+        sessionDate.toLocaleDateString("en-US"),
+        sessionDate.toLocaleTimeString("en-US", {
+          hour: "numeric",
+          minute: "2-digit",
+        }),
+      ]
+        .join(" ")
+        .toLowerCase()
+      
+      const matchSearch = !query || searchableText.includes(query)
+
       return matchFilter && matchSearch
+      
     })
     .sort((a, b) => {
       if (sort === "Most recent") return new Date(b.created_at) - new Date(a.created_at)
