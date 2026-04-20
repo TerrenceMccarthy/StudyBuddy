@@ -32,7 +32,7 @@ function timeAgo(dateStr) {
   return new Date(dateStr).toLocaleDateString()
 }
 
-function PostCard({ post, onEdit, onDelete, onClose, onShare, avatarColor, initials }) {
+function PostCard({ post, onEdit, onDelete, onClose, onShare, avatarColor, initials, profilePicture }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const subjectColor = SUBJECT_COLORS[post.subject] || { bg: '#f0f0f0', text: '#555' }
   const displayStatus = getSessionStatus(post)
@@ -50,9 +50,13 @@ function PostCard({ post, onEdit, onDelete, onClose, onShare, avatarColor, initi
     <div className={`${styles.card} ${isDim ? styles.cardClosed : ''}`}>
       <div className={styles.cardHeader}>
         <div className={styles.avatarWrap}>
-          <div className={styles.avatar} style={{ background: avatarColor || subjectColor.text }}>
-            {initials || 'ME'}
-          </div>
+          {profilePicture ? (
+            <img src={profilePicture} alt="avatar" className={styles.avatar} style={{ objectFit: 'cover' }} />
+          ) : (
+            <div className={styles.avatar} style={{ background: avatarColor || subjectColor.text }}>
+              {initials || 'ME'}
+            </div>
+          )}
           <div className={styles.posterInfo}>
             <span className={styles.posterName}>You</span>
             <span className={styles.postedAgo}>{timeAgo(post.created_at)}</span>
@@ -322,6 +326,7 @@ export default function MyPosts({ onShare }) {
                 onShare={onShare}
                 avatarColor={profile?.avatar_color}
                 initials={getInitials(profile?.full_name || user?.email || '')}
+                profilePicture={profile?.profile_picture_url}
               />
             ))}
           </div>
