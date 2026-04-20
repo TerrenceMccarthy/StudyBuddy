@@ -104,7 +104,7 @@
   border: 1.5px solid var(--border);
   border-radius: 30px;
   font-size: 0.9rem;
-  background: #fff;
+  background: var(--input-bg);
   color: var(--ink);
   outline: none;
   transition: border-color var(--transition), box-shadow var(--transition);
@@ -152,7 +152,7 @@
   color: var(--ink-light);
   border: 1.5px solid var(--border);
   border-radius: 20px;
-  background: #fff;
+  background: var(--input-bg);
   transition: all var(--transition);
   white-space: nowrap;
 }
@@ -171,7 +171,7 @@
 .filterActive:hover {
   background: var(--amber);
   border-color: var(--amber);
-  color: #fff;
+  color: white;
 }
 
 /* Feed */
@@ -197,7 +197,7 @@
   font-size: 0.82rem;
   border: 1.5px solid var(--border);
   border-radius: 8px;
-  background: #fff;
+  background: var(--input-bg);
   color: var(--ink);
   outline: none;
   cursor: pointer;
@@ -248,4 +248,9 @@
     padding-left: 1.1rem;
     padding-right: 1.1rem;
   }
+}
+
+/* Dark mode input placeholder */
+[data-theme="dark"] .searchInput::placeholder {
+  color: rgba(184, 169, 154, 0.4);
 }
