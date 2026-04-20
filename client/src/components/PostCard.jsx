@@ -2,14 +2,14 @@ import styles from './PostCard.module.css'
 import { subjectColors } from '../data/mockData'
 import { formatSessionTime, timeAgo as formatTimeAgo } from '../utils/time'
 
-function timeAgo(dateStr) {
-  const diff = Math.floor((Date.now() - new Date(dateStr)) / 1000)
-  if (diff < 60) return 'Just now'
-  if (diff < 3600) return `${Math.floor(diff / 60)} min ago`
-  if (diff < 86400) return `${Math.floor(diff / 3600)} hr${Math.floor(diff / 3600) > 1 ? 's' : ''} ago`
-  if (diff < 604800) return `${Math.floor(diff / 86400)} day${Math.floor(diff / 86400) > 1 ? 's' : ''} ago`
-  return new Date(dateStr).toLocaleDateString()
-}
+// function timeAgo(dateStr) {
+//   const diff = Math.floor((Date.now() - new Date(dateStr)) / 1000)
+//   if (diff < 60) return 'Just now'
+//   if (diff < 3600) return `${Math.floor(diff / 60)} min ago`
+//   if (diff < 86400) return `${Math.floor(diff / 3600)} hr${Math.floor(diff / 3600) > 1 ? 's' : ''} ago`
+//   if (diff < 604800) return `${Math.floor(diff / 86400)} day${Math.floor(diff / 86400) > 1 ? 's' : ''} ago`
+//   return new Date(dateStr).toLocaleDateString()
+// }
 
 function getInitials(name) {
   if (!name) return '?'
@@ -35,7 +35,7 @@ export default function PostCard({ post, index, onAccept, onShare, currentUser, 
   const avatarInitials = post.avatar || getInitials(authorName)
   const avatarColor = post.host_avatar_color || post.avatarColor || getAvatarColor(authorName)
   const profilePictureUrl = post.profile_picture_url || null
-  const postedAgo = post.postedAgo || timeAgo(post.created_at)
+  const postedAgo = post.postedAgo || formatTimeAgo(post.created_at)
   const courseTitle = post.course || post.topic
   const notes = post.notes || post.topic
   // Use formatSessionTime utility to convert UTC to local timezone
