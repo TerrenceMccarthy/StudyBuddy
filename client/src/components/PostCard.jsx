@@ -2,14 +2,7 @@ import styles from './PostCard.module.css'
 import { subjectColors } from '../data/mockData'
 import { formatSessionTime, timeAgo as formatTimeAgo } from '../utils/time'
 
-// function timeAgo(dateStr) {
-//   const diff = Math.floor((Date.now() - new Date(dateStr)) / 1000)
-//   if (diff < 60) return 'Just now'
-//   if (diff < 3600) return `${Math.floor(diff / 60)} min ago`
-//   if (diff < 86400) return `${Math.floor(diff / 3600)} hr${Math.floor(diff / 3600) > 1 ? 's' : ''} ago`
-//   if (diff < 604800) return `${Math.floor(diff / 86400)} day${Math.floor(diff / 86400) > 1 ? 's' : ''} ago`
-//   return new Date(dateStr).toLocaleDateString()
-// }
+
 
 function getInitials(name) {
   if (!name) return '?'
