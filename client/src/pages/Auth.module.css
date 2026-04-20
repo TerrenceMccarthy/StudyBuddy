@@ -2,7 +2,7 @@
 
 .page {
   min-height: 100vh;
-  background: #f5f0e8;
+  background: var(--cream);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -24,7 +24,7 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: #c07d1e;
+  background: var(--amber);
   opacity: 0.35;
   animation: pulse 3s ease-in-out infinite;
 }
@@ -36,8 +36,8 @@
 
 /* ── Card ─────────────────────────────────────────────── */
 .card {
-  background: #fff;
-  border: 1px solid #e8e0d2;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 20px;
   padding: 2.25rem 2.25rem 1.75rem;
   width: 100%;
@@ -57,32 +57,32 @@
   font-family: 'Georgia', serif;
   font-size: 1.2rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--ink);
   margin-bottom: 1.25rem;
   display: inline-block;
 }
 
 .logo span {
-  color: #1a1a1a;
+  color: var(--ink);
 }
 
 .logo em {
   font-style: italic;
-  color: #c07d1e;
+  color: var(--amber);
 }
 
 .heading {
   font-family: 'Georgia', serif;
   font-size: 1.6rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--ink);
   margin: 0 0 0.4rem;
 }
 
 .sub {
   font-family: system-ui, sans-serif;
   font-size: 0.9rem;
-  color: #888;
+  color: var(--ink-light);
   margin: 0;
   line-height: 1.6;
 }
@@ -110,7 +110,7 @@
   left: 15%;
   right: 15%;
   height: 1px;
-  background: #e8e0d2;
+  background: var(--border);
   z-index: 0;
 }
 
@@ -128,38 +128,38 @@
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  border: 2px solid #d5cfc4;
-  background: #fff;
+  border: 2px solid var(--border);
+  background: var(--surface);
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: system-ui, sans-serif;
   font-size: 0.78rem;
   font-weight: 600;
-  color: #bbb;
+  color: var(--ink-light);
   transition: all 0.2s;
 }
 
 .stepActive {
-  border-color: #2d7a6b;
-  background: #2d7a6b;
-  color: #fff;
+  border-color: var(--teal);
+  background: var(--teal);
+  color: white;
 }
 
 .stepDone {
-  border-color: #2d7a6b;
-  background: #e8f4f0;
-  color: #2d7a6b;
+  border-color: var(--teal);
+  background: var(--teal-pale);
+  color: var(--teal);
 }
 
 .stepLabel {
   font-family: system-ui, sans-serif;
   font-size: 0.72rem;
-  color: #bbb;
+  color: var(--ink-light);
 }
 
 .stepLabelActive {
-  color: #2d7a6b;
+  color: var(--teal);
   font-weight: 600;
 }
 
@@ -186,14 +186,14 @@
   font-family: system-ui, sans-serif;
   font-size: 0.78rem;
   font-weight: 600;
-  color: #666;
+  color: var(--ink-light);
   letter-spacing: 0.03em;
   text-transform: uppercase;
 }
 
 .optional {
   font-weight: 400;
-  color: #bbb;
+  color: var(--ink-light);
   text-transform: none;
   letter-spacing: 0;
 }
@@ -201,18 +201,18 @@
 .fieldHint {
   font-family: system-ui, sans-serif;
   font-size: 0.75rem;
-  color: #aaa;
+  color: var(--ink-light);
   margin-top: 0.1rem;
 }
 
 .input {
   padding: 0.62rem 0.9rem;
-  border: 1.5px solid #d5cfc4;
+  border: 1.5px solid var(--border);
   border-radius: 10px;
   font-family: system-ui, sans-serif;
   font-size: 0.92rem;
-  color: #1a1a1a;
-  background: #fafaf8;
+  color: var(--ink);
+  background: var(--surface-alt);
   transition: border-color 0.15s, background 0.15s;
   width: 100%;
   box-sizing: border-box;
@@ -220,8 +220,8 @@
 
 .input:focus {
   outline: none;
-  border-color: #2d7a6b;
-  background: #fff;
+  border-color: var(--teal);
+  background: var(--surface);
 }
 
 .textarea {
@@ -241,32 +241,32 @@
 .chipBtn {
   padding: 0.35rem 0.85rem;
   border-radius: 999px;
-  border: 1.5px solid #d5cfc4;
-  background: #fff;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
   font-family: system-ui, sans-serif;
   font-size: 0.8rem;
-  color: #555;
+  color: var(--ink-light);
   cursor: pointer;
   transition: all 0.15s;
 }
 
 .chipBtn:hover {
-  border-color: #2d7a6b;
-  color: #2d7a6b;
+  border-color: var(--teal);
+  color: var(--teal);
 }
 
 .chipActive {
-  background: #1a1a1a;
-  color: #fff;
-  border-color: #1a1a1a;
+  background: var(--ink);
+  color: white;
+  border-color: var(--ink);
 }
 
 /* ── Buttons ──────────────────────────────────────────── */
 .submitBtn {
   padding: 0.7rem;
   border-radius: 999px;
-  background: #2d7a6b;
-  color: #fff;
+  background: var(--teal);
+  color: white;
   border: none;
   font-family: system-ui, sans-serif;
   font-size: 0.95rem;
@@ -278,7 +278,7 @@
 }
 
 .submitBtn:hover:not(:disabled) {
-  background: #235f54;
+  background: var(--teal-light);
 }
 
 .submitBtn:disabled {
@@ -300,18 +300,18 @@
 .backBtn {
   padding: 0.7rem 1.25rem;
   border-radius: 999px;
-  border: 1.5px solid #d5cfc4;
-  background: #fff;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
   font-family: system-ui, sans-serif;
   font-size: 0.9rem;
-  color: #666;
+  color: var(--ink-light);
   cursor: pointer;
   transition: all 0.15s;
   white-space: nowrap;
 }
 
 .backBtn:hover {
-  border-color: #aaa;
+  border-color: var(--ink-light);
 }
 
 /* ── Google Button ────────────────────────────────────── */
@@ -320,7 +320,7 @@
   align-items: center;
   gap: 0.75rem;
   margin: 1.25rem 0;
-  color: #ccc;
+  color: var(--ink-light);
   font-family: system-ui, sans-serif;
   font-size: 0.82rem;
 }
@@ -330,18 +330,18 @@
   content: '';
   flex: 1;
   height: 1px;
-  background: #e8e0d2;
+  background: var(--border);
 }
 
 .googleBtn {
   width: 100%;
   padding: 0.65rem;
   border-radius: 999px;
-  border: 1.5px solid #d5cfc4;
-  background: #fff;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
   font-family: system-ui, sans-serif;
   font-size: 0.9rem;
-  color: #333;
+  color: var(--ink);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -351,16 +351,16 @@
 }
 
 .googleBtn:hover {
-  border-color: #aaa;
-  background: #fafaf8;
+  border-color: var(--ink-light);
+  background: var(--surface-alt);
 }
 
 /* ── Error ────────────────────────────────────────────── */
 .error {
   font-family: system-ui, sans-serif;
   font-size: 0.83rem;
-  color: #c0392b;
-  background: #fdecea;
+  color: var(--red);
+  background: var(--red-pale);
   border-radius: 8px;
   padding: 0.55rem 0.85rem;
   margin: 0;
@@ -375,14 +375,14 @@
 .forgotLink {
   font-family: system-ui, sans-serif;
   font-size: 0.85rem;
-  color: #2d7a6b;
+  color: var(--teal);
   text-decoration: none;
   font-weight: 500;
   transition: color 0.15s;
 }
 
 .forgotLink:hover {
-  color: #235f54;
+  color: var(--teal);
   text-decoration: underline;
 }
 
@@ -390,7 +390,7 @@
 .switchText {
   font-family: system-ui, sans-serif;
   font-size: 0.85rem;
-  color: #888;
+  color: var(--ink-light);
   text-align: center;
   margin-top: 1.25rem;
 }
@@ -398,7 +398,7 @@
 .switchLink {
   background: none;
   border: none;
-  color: #2d7a6b;
+  color: var(--teal);
   font-weight: 600;
   cursor: pointer;
   font-size: 0.85rem;
@@ -407,7 +407,7 @@
 }
 
 .switchLink:hover {
-  color: #235f54;
+  color: var(--teal);
 }
 
 /* ── Responsive ───────────────────────────────────────── */
