@@ -250,9 +250,8 @@
 
 .mobilePostBtn:hover { background: var(--amber); }
 
-.
 
-{
+.mobileDarkToggle{
   display: flex;
   align-items: center;
   justify-content: space-between;
