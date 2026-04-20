@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useUser } from '../context/UserContext'
+import DarkModeToggle from './DarkModeToggle'
 import styles from './Navbar.module.css'
 
 function getInitials(name) {
@@ -17,7 +18,7 @@ export default function Navbar({ onCreatePost }) {
   // Close mobile menu on navigation
   useEffect(() => { setMobileOpen(false) }, [location.pathname])
 
-  const fullName = user?.user_metadata?.full_name || user?.email || ''
+  const fullName = profile?.full_name || user?.user_metadata?.full_name || user?.email || ''
   const initials = getInitials(fullName)
   const isActive = (path) => location.pathname === path
 
@@ -37,6 +38,9 @@ export default function Navbar({ onCreatePost }) {
         </div>
 
         <div className={styles.actions}>
+          {/* Dark mode toggle */}
+          <DarkModeToggle />
+
           {/* Desktop post button */}
           <button className={styles.postBtn} onClick={onCreatePost}>
             <span className={styles.plus}>+</span> Post a Session
@@ -45,7 +49,11 @@ export default function Navbar({ onCreatePost }) {
           {/* Avatar + dropdown */}
           <div className={styles.avatarWrap}>
             <button className={styles.avatarBtn} onClick={() => setMenuOpen(o => !o)}>
-              <div className={styles.avatar} style={{ background: profile?.avatar_color || undefined }}>{initials}</div>
+              {profile?.profile_picture_url ? (
+                <img src={profile.profile_picture_url} alt={fullName} className={styles.avatarImg} />
+              ) : (
+                <div className={styles.avatar} style={{ background: profile?.avatar_color || undefined }}>{initials}</div>
+              )}
             </button>
             {menuOpen && (
               <div className={styles.dropdown}>
@@ -84,6 +92,10 @@ export default function Navbar({ onCreatePost }) {
           <button className={styles.mobilePostBtn} onClick={() => { onCreatePost(); setMobileOpen(false) }}>
             + Post a Session
           </button>
+          <div className={styles.mobileDarkToggle}>
+            <span className={styles.mobileDarkLabel}>Dark mode</span>
+            <DarkModeToggle />
+          </div>
         </div>
       )}
     </nav>
