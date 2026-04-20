@@ -49,8 +49,8 @@ export function getSessionStatus(post) {
     return 'open';
   }
 
-  // Expired overrides stored status (except for already closed sessions)
-  if (post.time && isExpired(post.time) && post.status !== 'closed') {
+  // Expired overrides all stored statuses — if the time has passed, it's expired
+  if (post.time && isExpired(post.time)) {
     return 'expired';
   }
 

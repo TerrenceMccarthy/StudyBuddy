@@ -285,6 +285,7 @@ export default function Matches() {
   const [matches, setMatches] = useState([])
   const [loading, setLoading] = useState(true)
   const [activeFilter, setActiveFilter] = useState('all')
+  const [sort, setSort] = useState('Soonest first')
   const [messagingMatch, setMessagingMatch] = useState(null)
 
   const FILTERS = [
@@ -324,10 +325,16 @@ export default function Matches() {
 
   useEffect(() => { fetchMatches() }, [user])
 
-  const filtered = matches.filter(m => {
-    const status = getStatus(m.posts?.time)
-    return activeFilter === 'all' || status === activeFilter
-  })
+  const filtered = matches
+    .filter(m => {
+      const status = getStatus(m.posts?.time)
+      return activeFilter === 'all' || status === activeFilter
+    })
+    .sort((a, b) => {
+      if (sort === 'Most recent') return new Date(b.created_at) - new Date(a.created_at)
+      if (sort === 'By subject') return (a.posts?.subject || '').localeCompare(b.posts?.subject || '')
+      return new Date(a.posts?.time) - new Date(b.posts?.time) // Soonest first (default)
+    })
 
   const stats = {
     total: matches.length,
@@ -405,7 +412,7 @@ export default function Matches() {
             {filtered.length} match{filtered.length !== 1 ? 'es' : ''}
             {activeFilter !== 'all' ? ` · ${FILTERS.find(f => f.key === activeFilter)?.label}` : ''}
           </span>
-          <select className={styles.sortSelect}>
+          <select className={styles.sortSelect} value={sort} onChange={e => setSort(e.target.value)}>
             <option>Soonest first</option>
             <option>Most recent</option>
             <option>By subject</option>
