@@ -271,7 +271,6 @@
   .links   { display: none; }
   .postBtn { display: none; }
   /* hide desktop toggle, show in mobile menu */
-  .actions > :global(.toggle) { display: none; }
   .hamburger { display: flex; }
 
   .inner { gap: 0; }
