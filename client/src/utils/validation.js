@@ -66,6 +66,12 @@ export function validateSessionData(data) {
 
   if (!data.duration || !data.duration.trim()) {
     errors.duration = 'Duration is required'
+  } else {
+    const durationValue = parseInt(data.duration, 10)
+
+    if (isNaN(durationValue) || durationValue <= 0) {
+      errors.duration = 'Duration must be a positive number'
+    }
   }
 
   return {
