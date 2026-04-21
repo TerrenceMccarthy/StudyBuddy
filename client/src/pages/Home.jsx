@@ -7,8 +7,9 @@ import styles from './Home.module.css'
 const FILTERS = ["All", "Computer Science", "Mathematics", "Biology", "Chemistry", "English", "History", "Business", "Psychology", "Physics", "Medical", "Arts"]
 
 export default function Home({ onAccept, onShare, refreshKey }) {
-  const { profile } = useUser()
+  const { profile, user } = useUser()
   const [posts, setPosts] = useState([])
+  const [joinedPostIds, setJoinedPostIds] = useState(new Set())
   const [loading, setLoading] = useState(true)
   const [activeFilter, setActiveFilter] = useState("All")
   const [search, setSearch] = useState("")
@@ -16,16 +17,22 @@ export default function Home({ onAccept, onShare, refreshKey }) {
 
   const fetchPosts = async () => {
     setLoading(true)
-    const { data, error } = await supabase
-      .from('posts')
-      .select(`
-        *,
-        profiles ( full_name, avatar_color, profile_picture_url ),
-        matches ( count )
-      `)
-      .eq('status', 'open')
-      .gt('time', new Date().toISOString())   // ← only future sessions
-      .order('time', { ascending: true })      // ← soonest first by default
+    const [{ data, error }, { data: myMatches }] = await Promise.all([
+      supabase
+        .from('posts')
+        .select(`
+          *,
+          profiles ( full_name, avatar_color, profile_picture_url ),
+          matches ( count )
+        `)
+        .eq('status', 'open')
+        .gt('time', new Date().toISOString())
+        .order('time', { ascending: true }),
+      supabase
+        .from('matches')
+        .select('post_id')
+        .eq('user_id', user?.id)
+    ])
 
     if (!error) {
       const withCount = data.map(p => ({
@@ -37,10 +44,11 @@ export default function Home({ onAccept, onShare, refreshKey }) {
       }))
       setPosts(withCount)
     }
+    setJoinedPostIds(new Set((myMatches || []).map(m => m.post_id)))
     setLoading(false)
   }
 
-  useEffect(() => { fetchPosts() }, [refreshKey])
+  useEffect(() => { if (user) fetchPosts() }, [refreshKey, user])
 
   const handleModeratorDelete = async (post) => {
     try {
@@ -235,6 +243,7 @@ export default function Home({ onAccept, onShare, refreshKey }) {
                 onAccept={onAccept}
                 onShare={onShare}
                 currentUser={profile}
+                isJoined={joinedPostIds.has(post.id)}
                 onModeratorDelete={handleModeratorDelete}
                 onModeratorClose={handleModeratorClose}
               />

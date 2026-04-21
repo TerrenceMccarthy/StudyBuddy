@@ -18,7 +18,7 @@ function getAvatarColor(str) {
   return colors[Math.abs(hash) % colors.length]
 }
 
-export default function PostCard({ post, index, onAccept, onShare, currentUser, onModeratorDelete, onModeratorClose }) {
+export default function PostCard({ post, index, onAccept, onShare, currentUser, isJoined, onModeratorDelete, onModeratorClose }) {
   const colors = subjectColors[post.subject] || { bg: '#f0f0f0', text: '#555' }
   const isAccepted = post.status === 'accepted'
   const isModerator = currentUser?.is_moderator || false
@@ -143,7 +143,12 @@ export default function PostCard({ post, index, onAccept, onShare, currentUser, 
       </div>
 
       <div className={styles.footer}>
-        {isAccepted ? (
+        {isJoined ? (
+          <div className={styles.acceptedBadge}>
+            <span className={styles.acceptedDot} />
+            Joined
+          </div>
+        ) : isAccepted ? (
           <div className={styles.acceptedBadge}>
             <span className={styles.acceptedDot} />
             Session Matched
